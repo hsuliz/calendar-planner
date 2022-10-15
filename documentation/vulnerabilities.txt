@@ -1,0 +1,17 @@
+﻿1. Podanie przez użytkownika nieprawidłowej daty (np 43 września, 30 luty)
+2. Podanie przez użytkownika daty prawidłowej z przeszłości
+3. Nie uwzględnianie lat przestępnych w GUI oraz w przeliczeniach
+4. Przy wydarzeniach cyklicznych (np co miesiąc) niepoprawne przeliczanie wydarzeń pod koniec miesiąca (np. początek 31 sierpnia, kolejne wydarzenie powinno być 30 września a nie 31 września)
+5. Brak blokady tworzenia takich samych wydarzeń (co do nazwy i terminu)
+6. Nie zapisanie danych wprowadzonych przez użytkownika przy crashu aplikacji
+7. Brak możliwości edycji lub usunięcia utworzonych wydarzeń
+8. Brak limitu długości nazwy wydarzenia (spowoduje złe wyświetlania tekstu w aplikacji)
+9. Brak minimalnej długości 
+* nazwy wydarzenia podczas tworzenia wydarzenia
+* loginu/emaila, hasła podczas rejestracji
+10. Brak walidacji godziny (możliwe wpisanie 14:79)
+11. System nie uwzględnia czasu lokalnego użytkownika
+12. W sytuacji gdy użytkownik utworzy jakieś wydarzenie cykliczne, ale potem będzie chciał tą cykliczność usunąć (np. miał zajęcia przez jeden semestr i potem już tych zajęć nie ma), brak obsługiwania usuwania tej cykliczności
+13. Brak poprawnej obsługi znaków specjalnych (np. przy rejestracji i podawaniu danych użytkownika blokada nazwisk lub imion dwuczłonowych, gdzie pomiędzy członami jest “-”)
+14. Brak systemu zapisywania sesji użytkownika (konieczność logowania się do aplikacji przy każdym wejściu do niej)
+15. Przy braku połączenia z internetem brak informowania użytkownika o tym (użytkownik może myśleć że dodał wydarzenie, ale request z tym wydarzeniem nigdy nie dotarł do API)
