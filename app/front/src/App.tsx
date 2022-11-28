@@ -1,22 +1,16 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import StartingPage from './pages/StartingPage';
 
 function App() {
-	return (
-		<BrowserRouter>
-			<div className='App'>
-				<header className='App-header'>
-					<p>
-						Edit <code>src/App.tsx</code> and save to reload.
-					</p>
-					<a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-						Learn React
-					</a>
-				</header>
-			</div>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<StartingPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
