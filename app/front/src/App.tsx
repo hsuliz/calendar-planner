@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import "@blueprintjs/core/lib/css/blueprint.css";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import StartingPage from './pages/StartingPage';
 import LoginPage from './pages/LoginPage';
