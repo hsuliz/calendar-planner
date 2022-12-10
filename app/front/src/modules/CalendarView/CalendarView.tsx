@@ -15,6 +15,11 @@ const CalendarView = () => {
   return (
     <div>
       <AddEventModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div style={{
+        width: '80%',
+        height: '80%',
+        margin: 'auto',
+      }}>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         // initialView="dayGridWeek"
@@ -31,6 +36,7 @@ const CalendarView = () => {
           today: 'powrøt',
         }}
       />
+      </div>
     </div>
   );
 };
@@ -42,7 +48,6 @@ function renderEventContent(eventInfo: EventContentArg) {
 
   return (
     <div onClick={onEventClick}>
-      <span>cipa</span>
       {/* <b>{eventInfo.timeText}</b> */}
       <i>{eventInfo.event.title}</i>
     </div>

@@ -1,85 +1,66 @@
-import React, { useState } from 'react';
-import { InputGroup, Label, TextArea } from '@blueprintjs/core';
-import { DateInput, TimePrecision } from '@blueprintjs/datetime';
+import React from 'react';
+import { Button, Classes, Intent } from '@blueprintjs/core';
+import { Formik, Form, Field } from 'formik';
 import PeriodicitySelect, {
-  Periodicity,
-  selectItems,
-} from './CustomInputs/PeriodicitySelect';
+  periodicitySelectItems,
+} from '../InputBindings/PeriodicitySelect';
+import { TextInputBinding } from '../InputBindings/TextInputBinding';
+import { TextAreaBinding } from '../InputBindings/TextAreaBinding';
+import { DateInputBinding } from '../InputBindings/DateInputBinding';
 
 interface AddEventFormProps {
   className?: string;
+  onModalClose: () => void;
 }
 
-export const AddEventForm = ({ className }: AddEventFormProps) => {
-  const [selectedPeriodicity, setSelectedPeriodicity] = useState<Periodicity>(
-    selectItems[0]
-  );
+type AddEventFormField = 'name' | 'description' | 'dateFrom' | 'dateTo' | 'periodicity';
+type AddEventFormValues = Record<AddEventFormField, string | Date | object>;
 
-  const onItemSelect = (item: Periodicity) => {
-    setSelectedPeriodicity(item);
+const initialValues: AddEventFormValues = {
+  name: '',
+  description: '',
+  dateFrom: new Date(),
+  dateTo: new Date(),
+  periodicity: periodicitySelectItems[0].value,
+};
+
+export const AddEventForm = ({ className, onModalClose }: AddEventFormProps) => {
+  const onFormSubmit = (values: AddEventFormValues) => {
+    console.log(values);
+    // onModalClose();
   };
 
-  const parseDate = (str: string, locale?: string | undefined): false => {
-    console.log(str, locale);
-
-    return false;
-  }
-
-  const formatDate = (date: Date, locale?: string | undefined) => {
-    // TODO: usunąć sekundy
-    return date.toLocaleDateString() + '  ' + date.toLocaleTimeString();
-  }
-
   return (
-    <div className={className}>
-      <Label>
-        Nazwa
-        <InputGroup placeholder="Nazwa..." />
-      </Label>
+    <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
+      {({ handleSubmit, errors, handleChange }) => (
+        <Form onSubmit={handleSubmit}>
+          <div className={className}>
+            <Field name="name" label="Nazwa" component={TextInputBinding} />
+            <Field name='description' label='Opis' component={TextAreaBinding} />
 
-      <Label>
-        Opis
-        <TextArea
-          fill
-          growVertically={true}
-          large={true}
-          // onChange={this.handleChange}
-          // value={this.state.value}
-        />
-      </Label>
+            <div
+              style={{
+                display: 'flex',
+                flexShrink: 1,
+                justifyContent: 'space-between',
+              }}
+            >
+                <Field name='dateFrom' label='Od' component={DateInputBinding} />
+                <Field name='dateTo' label='Do' component={DateInputBinding} />
+            </div>
 
-      <div style={{
-        display: 'flex',
-        flexShrink: 1,
-        justifyContent: 'space-between',
-      }}>
-        <Label>
-          Od
-          <DateInput
-            // TODO: default value to powinien być kliknięty dzień na kalendarzu
-            defaultValue={new Date()}
-            locale='pl'
-            parseDate={parseDate}
-            formatDate={formatDate}
-            timePrecision={TimePrecision.MINUTE}
-          />
-        </Label>
-        <Label>
-          Od
-          <DateInput
-            defaultValue={new Date()}
-            locale='pl'
-            parseDate={parseDate}
-            formatDate={formatDate}
-            timePrecision={TimePrecision.MINUTE}
-          />
-        </Label>
-      </div>
-
-      <PeriodicitySelect
-        activeItem={selectedPeriodicity}
-        onItemSelect={onItemSelect}
-      />
-    </div>
+            <Field name='periodicity' label='Cykliczność' component={PeriodicitySelect} />
+          </div>
+          <div className={Classes.DIALOG_FOOTER}>
+            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+              <Button onClick={onModalClose}>Anuluj</Button>
+              <Button type='submit' intent={Intent.SUCCESS}>
+                Zatwierdź
+              </Button>
+            </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 };
