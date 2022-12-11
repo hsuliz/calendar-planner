@@ -1,6 +1,7 @@
 import React from 'react';
-import { Label, TextArea } from '@blueprintjs/core';
+import { Intent, Label, TextArea } from '@blueprintjs/core';
 import { InputBindingProps } from './constants';
+import { Tooltip2 } from '@blueprintjs/popover2';
 
 export const TextAreaBinding = ({
   field,
@@ -16,9 +17,21 @@ export const TextAreaBinding = ({
   };
 
   return (
-    <Label>
-      {label}
-      <TextArea fill growVertically={true} large={true} onChange={onChange} />
-    </Label>
+    <Tooltip2
+      content={error || 'tu mogę wpisać cokolwiek serio'}
+      isOpen={!!error}
+      fill
+    >
+      <Label>
+        {label}
+        <TextArea
+          fill
+          growVertically={true}
+          large={true}
+          intent={error ? Intent.DANGER : Intent.NONE}
+          onChange={onChange}
+        />
+      </Label>
+    </Tooltip2>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Classes, Dialog } from '@blueprintjs/core';
-import { AddEventForm } from './AddEventForm';
+import { AddEventForm } from '../AddEventForm/AddEventForm';
 
 interface AddEventModalProps {
   isOpen: boolean;

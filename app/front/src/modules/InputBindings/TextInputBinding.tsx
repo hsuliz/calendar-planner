@@ -1,6 +1,7 @@
 import React from 'react';
-import { InputGroup, Label } from '@blueprintjs/core';
+import { InputGroup, Intent, Label } from '@blueprintjs/core';
 import { InputBindingProps } from './constants';
+import { Tooltip2 } from '@blueprintjs/popover2';
 
 export const TextInputBinding = ({
   field,
@@ -16,9 +17,11 @@ export const TextInputBinding = ({
   };
 
   return (
+    <Tooltip2 content={error || 'tu mogę wpisać cokolwiek serio'} isOpen={!!error} fill>
     <Label>
       {label}
-      <InputGroup placeholder="Nazwa..." onChange={onChange} />
+      <InputGroup placeholder="Nazwa..." onChange={onChange} intent={error ? Intent.DANGER : Intent.NONE} />
     </Label>
+    </Tooltip2>
   );
 };
