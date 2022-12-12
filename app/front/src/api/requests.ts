@@ -6,7 +6,52 @@ interface AuthRequestReturnValue {
 	failureReason?: string;
 }
 
-export const login = async (
+export const registrationRequest = async (
+	firstName: string,
+	lastName: string,
+	email: string,
+	password: string
+): Promise<AuthRequestReturnValue> => {
+	try {
+		const { data, status } = await axios.post('/auth/registration', {
+			firstName,
+			lastName,
+			email,
+			password,
+		});
+
+		if (status === 200) {
+			return {
+				success: true,
+				token: data.token,
+			};
+		}
+	} catch (e: unknown) {
+		if (e instanceof AxiosError) {
+			const status = e.response?.status;
+
+			if (status === 500) {
+				return {
+					success: false,
+					failureReason: 'Błąd serwera. Spróbuj ponownie później.',
+				};
+			}
+
+			if (status === 401) {
+				return {
+					success: false,
+					failureReason: 'Błędna nazwa użytkownika lub hasło',
+				};
+			}
+		}
+	}
+	return {
+		success: false,
+		failureReason: 'Nieznany błąd :-(',
+	};
+};
+
+export const loginRequest = async (
 	email: string,
 	password: string
 ): Promise<AuthRequestReturnValue> => {
@@ -33,10 +78,11 @@ export const login = async (
 				};
 			}
 
-			if (status === 401) {
+			// 4XX errors
+			if (status?.toString()[0] === '4') {
 				return {
 					success: false,
-					failureReason: 'Błędna nazwa użytkownika lub hasło',
+					failureReason: e.response?.data.failureReason,
 				};
 			}
 		}

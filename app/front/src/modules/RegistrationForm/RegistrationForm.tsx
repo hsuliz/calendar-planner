@@ -6,10 +6,11 @@ import * as C from './constants';
 import { TextInputBinding } from '../InputBindings/TextInputBinding';
 import { PasswordInputBinding } from '../InputBindings/PasswordInputBinding';
 import { Link, Navigate } from 'react-router-dom';
-import { loginRequest } from '../../api/requests';
+import { registrationRequest } from '../../api/requests';
 import { AuthContext } from '../../contexts/AuthContext';
+import { CheckboxBinding } from '../InputBindings/CheckboxBinding';
 
-function LoginForm() {
+function RegistrationForm() {
 	const { isLoggedIn, setIsLoggedIn, setToken } = useContext(AuthContext);
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,14 +33,21 @@ function LoginForm() {
 		}
 	};
 
-	const onFormSubmit = async (values: C.LoginFormValues) => {
+	const onFormSubmit = async (values: C.RegistrationFormValues) => {
+		console.log(values);
+
 		setIsSubmitting(true);
 
 		const {
 			success,
 			token = '',
 			failureReason = '',
-		} = await loginRequest(values.email, values.password);
+		} = await registrationRequest(
+			values.firstName,
+			values.lastName,
+			values.email,
+			values.password
+		);
 
 		setIsSubmitting(false);
 
@@ -59,7 +67,7 @@ function LoginForm() {
 		<Formik
 			initialValues={C.initialValues}
 			onSubmit={onFormSubmit}
-			validationSchema={C.loginFormValidationSchema}
+			validationSchema={C.registrationFormValidationSchema}
 			validateOnChange={shouldValidateOnChange}
 			validateOnBlur={shouldValidateOnChange}
 		>
@@ -74,12 +82,29 @@ function LoginForm() {
 				>
 					<P.LoginFormWrapper className='bp4-dark'>
 						<Field
+							name='firstName'
+							label='Imię'
+							placeholder='Imię...'
+							error={errors.firstName}
+							component={TextInputBinding}
+						/>
+
+						<Field
+							name='lastName'
+							label='Nazwisko'
+							placeholder='Nazwisko...'
+							error={errors.lastName}
+							component={TextInputBinding}
+						/>
+
+						<Field
 							name='email'
 							label='E-mail'
 							placeholder='E-mail...'
 							error={errors.email}
 							component={TextInputBinding}
 						/>
+
 						<Field
 							name='password'
 							label='Hasło'
@@ -88,17 +113,24 @@ function LoginForm() {
 							component={PasswordInputBinding}
 						/>
 
+						<Field
+							name='acceptTerms'
+							label='Akceptuję regulamin'
+							error={errors.acceptTerms}
+							component={CheckboxBinding}
+						/>
+
 						<Button
 							type='submit'
 							intent={Intent.PRIMARY}
 							loading={isSubmitting}
 							fill
 						>
-							Zaloguj
+							Utwórz konto
 						</Button>
-						<P.StyledLink to='/rejestracja'>
+						<P.StyledLink to='/login'>
 							<Button type='button' outlined fill>
-								Nie mam jeszcze konta
+								Mam już konto
 							</Button>
 						</P.StyledLink>
 
@@ -110,7 +142,7 @@ function LoginForm() {
 
 						{formSuccess && (
 							<Callout intent={Intent.SUCCESS} title='Sukces!'>
-								Zalogowano poprawnie!{' '}
+								Utworzono konto!{' '}
 								<Link to='/kalendarz'>Przejdź do kalendarza.</Link>
 							</Callout>
 						)}
@@ -121,4 +153,4 @@ function LoginForm() {
 	);
 }
 
-export default LoginForm;
+export default RegistrationForm;

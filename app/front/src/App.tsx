@@ -7,6 +7,7 @@ import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import StartingPage from './pages/StartingPage';
 import LoginPage from './pages/LoginPage';
+import RegistrationPage from './pages/RegistrationPage';
 import CalendarView from './modules/CalendarView/CalendarView';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
 			<Routes>
 				<Route path='/' element={<StartingPage />} />
 				<Route path='/login' element={<LoginPage />} />
+				<Route path='/rejestracja' element={<RegistrationPage />} />
 				<Route path='/kalendarz' element={<CalendarView />} />
 			</Routes>
 		</BrowserRouter>
