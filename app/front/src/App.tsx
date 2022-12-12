@@ -10,15 +10,15 @@ import LoginPage from './pages/LoginPage';
 import CalendarView from './modules/CalendarView/CalendarView';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<StartingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path='/calendar' element={<CalendarView />} />
-      </Routes>
-    </BrowserRouter>
-  );
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path='/' element={<StartingPage />} />
+				<Route path='/login' element={<LoginPage />} />
+				<Route path='/kalendarz' element={<CalendarView />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default App;

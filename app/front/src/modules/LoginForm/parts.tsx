@@ -4,8 +4,9 @@ import styled from 'styled-components';
 export const LoginFormWrapper = styled.section`
 	display: flex;
 	flex-direction: column;
+	width: 300px;
 `;
 
 export const StyledLink = styled(Link)`
-	margin-top: 10px;
+	margin: 10px 0;
 `;
