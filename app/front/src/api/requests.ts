@@ -37,10 +37,11 @@ export const registrationRequest = async (
 				};
 			}
 
-			if (status === 401) {
+			// 4XX errors
+			if (status?.toString()[0] === '4') {
 				return {
 					success: false,
-					failureReason: 'Błędna nazwa użytkownika lub hasło',
+					failureReason: e.response?.data.failureReason,
 				};
 			}
 		}
