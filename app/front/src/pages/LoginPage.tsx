@@ -3,12 +3,12 @@ import LoginForm from '../modules/LoginForm/LoginForm';
 
 function LoginPage() {
 	return (
-        <div className='App'>
-            <header className='App-header'>
-                <p>Logowanie</p>
-                <LoginForm />
-            </header>
-        </div>
+		<div className='App'>
+			<header className='App-header'>
+				<h1>Logowanie</h1>
+				<LoginForm />
+			</header>
+		</div>
 	);
 }
 
