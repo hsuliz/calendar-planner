@@ -15,12 +15,12 @@ public class UserDetailsServiceImp implements org.springframework.security.core.
 
 
     @Override
-    public UserDetails loadUserByUsername(String username)
+    public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
         return userRepository
-                .findByUsername(username)
+                .findByEmail(email)
                 .map(UserDetailsImp::new)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with -> username or email: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with this email: " + email));
     }
 
 }
