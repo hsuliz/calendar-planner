@@ -9,6 +9,7 @@ import StartingPage from './pages/StartingPage';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import CalendarView from './modules/CalendarView/CalendarView';
+import EventView from './modules/EventView/EventView';
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 				<Route path='/login' element={<LoginPage />} />
 				<Route path='/rejestracja' element={<RegistrationPage />} />
 				<Route path='/kalendarz' element={<CalendarView />} />
+				<Route path='/kalendarz/:id' element={<EventView />} />
 			</Routes>
 		</BrowserRouter>
 	);
