@@ -20,12 +20,13 @@ const mockedEvents = [
 const CalendarView = () => {
 	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
+	const [clickedDate, setClickedDate] = useState<Date>();
 
 	// to initially render calendar in previously seen view (not always in dayGridMonth)
 	const initialView = localStorage.getItem('calendarView') || 'dayGridMonth';
 
-	const handleDateClick = (args: DateClickArg) => {
-		console.log(args);
+	const handleDateClick = (clickedDate: DateClickArg) => {
+		setClickedDate(clickedDate.date);
 		setIsOpen(true);
 	};
 
@@ -43,7 +44,7 @@ const CalendarView = () => {
 
 	return (
 		<div>
-			<AddEventModal isOpen={isOpen} setIsOpen={setIsOpen} />
+			<AddEventModal isOpen={isOpen} clickedDate={clickedDate} setIsOpen={setIsOpen} />
 			<div
 				style={{
 					width: '80%',
