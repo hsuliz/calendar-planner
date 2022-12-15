@@ -15,6 +15,7 @@ export const CheckboxBinding = ({ field, form, label, error }: InputBindingProps
 
 	useEffect(() => {
 		setFieldValue(name, isChecked);
+		// eslint-disable-next-line
 	}, [isChecked]);
 
 	return (

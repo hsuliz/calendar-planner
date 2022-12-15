@@ -3,21 +3,23 @@ import { Classes, Dialog } from '@blueprintjs/core';
 import { AddEventForm } from '../AddEventForm/AddEventForm';
 
 interface AddEventModalProps {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+	isOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
 }
 
 export const AddEventModal = ({ isOpen, setIsOpen }: AddEventModalProps) => {
-  const handleModalClose = () => {
-    setIsOpen(false);
-  };
+	const handleModalClose = () => {
+		setIsOpen(false);
+	};
 
-  return (
-    <Dialog isOpen={isOpen} onClose={handleModalClose} title="Dodaj wydarzenie">
-      <AddEventForm
-        className={Classes.DIALOG_BODY}
-        onModalClose={handleModalClose}
-      />
-    </Dialog>
-  );
+	return (
+		<Dialog
+			className='bp4-dark'
+			isOpen={isOpen}
+			onClose={handleModalClose}
+			title='Dodaj wydarzenie'
+		>
+			<AddEventForm className={Classes.DIALOG_BODY} onModalClose={handleModalClose} />
+		</Dialog>
+	);
 };

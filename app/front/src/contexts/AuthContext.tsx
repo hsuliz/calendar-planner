@@ -53,6 +53,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		if (jwt) {
 			handleTokenValidation(jwt);
 		}
+		// eslint-disable-next-line
 	}, []);
 
 	const contextValue: IAuthContext = {
