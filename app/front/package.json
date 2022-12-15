@@ -11,6 +11,7 @@
     "@blueprintjs/select": "^4.8.12",
     "@fullcalendar/daygrid": "^5.11.3",
     "@fullcalendar/interaction": "^5.11.3",
+    "@fullcalendar/list": "^5.11.3",
     "@fullcalendar/react": "^5.11.3",
     "@types/node": "^16.18.3",
     "@types/react": "^17.0.39",
