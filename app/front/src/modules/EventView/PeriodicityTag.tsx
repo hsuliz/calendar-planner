@@ -15,16 +15,19 @@ const periodicityTranslations: Record<PeriodicityType, string> = {
 };
 
 const PeriodicityTag = ({ periodicity }: PeriodicityTagProps) => {
+	const isSingleEvent = periodicity === 'once';
+
 	return (
 		<div>
 			<Tag
 				large
 				fill={false}
 				intent={Intent.PRIMARY}
-				icon={periodicity === 'once' ? 'calendar' : 'repeat'}
+				icon={isSingleEvent ? 'calendar' : 'repeat'}
 			>
 				{periodicityTranslations[periodicity]}
 			</Tag>
+			{!isSingleEvent && <div>Najbliższe powtórzenie wydarzenia:</div>}
 		</div>
 	);
 };

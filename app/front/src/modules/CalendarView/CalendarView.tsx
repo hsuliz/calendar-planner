@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// FULLCALENDAR EXTENSIONS
 import FullCalendar, { DatesSetArg, EventClickArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
+import rrulePlugin from '@fullcalendar/rrule';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'; // needed for dayClick
-import { AddEventModal } from '../AddEventModal/AddEventModal';
-import './bootstrap-theme/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom';
 
-const mockedEvents = [
-	{
-		title: 'event 1',
-		id: 'hash1',
-		start: '2022-12-01T16:00:00',
-		end: '2022-12-01T20:00:00',
-	},
-	{ title: 'event 2', date: '2022-12-02', id: 'hash2' },
-];
+import './bootstrap-theme/bootstrap.min.css';
+import { AddEventModal } from '../AddEventModal/AddEventModal';
+import * as C from './constants';
 
 const CalendarView = () => {
 	const navigate = useNavigate();
@@ -54,8 +49,8 @@ const CalendarView = () => {
 			>
 				<FullCalendar
 					// PLUGINS AND EVENTS CONFIG
-					plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
-					events={mockedEvents}
+					plugins={[dayGridPlugin, interactionPlugin, listPlugin, rrulePlugin]}
+					events={C.mockedEvents}
 					// CLICK AND CHANGE HANDLERS
 					dateClick={handleDateClick}
 					eventClick={onEventClick}

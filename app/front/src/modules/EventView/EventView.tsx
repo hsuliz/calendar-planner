@@ -14,18 +14,19 @@ import {
 } from '@blueprintjs/core';
 import moment from 'moment';
 import PeriodicityTag from './PeriodicityTag';
+import ParticipantsSection from './ParticipantsSection/ParticipantsSection';
+
+// TODO: zweryfikować czy użytkownik może zobaczyć dany event (jeśli nie to robimy redirect na /kalendarz)
 
 const EventView = (props: C.EventViewProps) => {
 	const { id: eventId } = useParams();
-	const { name, description, dateFrom, dateTo, periodicity, isPublic } = C.mockEventInfo;
+	const { name, description, dateFrom, dateTo, periodicity, isPublic, isOwner } =
+		C.mockEventInfo;
 	const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
-
-	// TODO: useQuery, w którym będą pobierane z api dane dla eventu o podanym ID
 
 	const onRemoveEvent = () => {
 		setIsRemoveDialogOpen(true);
 		console.log('remove event with ID: ', eventId);
-		// TODO: open dialog to confirm
 	};
 
 	const onCloseDialog = () => {
@@ -63,30 +64,34 @@ const EventView = (props: C.EventViewProps) => {
 			{isPublic && (
 				<>
 					<Divider />
-					<h3>Lista uczestników</h3>
+					<ParticipantsSection isOwner={isOwner} />
 				</>
 			)}
 
-			<Divider />
+			{isOwner && (
+				<>
+					<Divider />
 
-			<Button icon='remove' onClick={onRemoveEvent} intent={Intent.DANGER} fill>
-				Usuń wydarzenie
-			</Button>
-			<Dialog
-				className={Classes.DARK}
-				isOpen={isRemoveDialogOpen}
-				onClose={onCloseDialog}
-				isCloseButtonShown
-				title='Uwaga!'
-			>
-				<Callout intent={Intent.DANGER}>
-					<p>Czy chcesz usunąć to wydarzenie? Tej akcji nie można cofnąć!</p>
-
-					<Button fill intent={Intent.DANGER}>
-						Potwierdzam usunięcie
+					<Button icon='remove' onClick={onRemoveEvent} intent={Intent.DANGER} fill>
+						Usuń wydarzenie
 					</Button>
-				</Callout>
-			</Dialog>
+					<Dialog
+						className={Classes.DARK}
+						isOpen={isRemoveDialogOpen}
+						onClose={onCloseDialog}
+						isCloseButtonShown
+						title='Uwaga!'
+					>
+						<Callout intent={Intent.DANGER}>
+							<p>Czy chcesz usunąć to wydarzenie? Tej akcji nie można cofnąć!</p>
+
+							<Button fill intent={Intent.DANGER}>
+								Potwierdzam usunięcie
+							</Button>
+						</Callout>
+					</Dialog>
+				</>
+			)}
 		</P.EventInfoWrapper>
 	);
 };

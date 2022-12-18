@@ -7,6 +7,7 @@ export interface EventInfo {
 	dateFrom: Date;
 	dateTo: Date;
 	periodicity: PeriodicityType;
+	isOwner: boolean;
 	isPublic: boolean;
 	usersList?: User[];
 }
@@ -18,6 +19,7 @@ export const mockEventInfo: EventInfo = {
 	dateTo: new Date(),
 	periodicity: 'weekly',
 	isPublic: true,
+	isOwner: true,
 };
 
 export interface EventViewProps {}
