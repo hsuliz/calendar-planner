@@ -1,16 +1,24 @@
 import moment from 'moment';
 import * as yup from 'yup';
-import { periodicitySelectItems } from '../InputBindings/PeriodicitySelect';
+import {
+	periodicitySelectItems,
+	PeriodicityType,
+} from '../InputBindings/PeriodicitySelect';
 
 // prettier-ignore
 export type AddEventFormField =  'name' | 'description' | 'dateFrom' | 'dateTo' | 'periodicity' | 'until' | 'isPublic';
 
-export type AddEventFormValues = Record<
-	AddEventFormField,
-	string | Date | boolean | undefined
->;
+export interface AddEventFormValues {
+	name: string;
+	description: string;
+	dateFrom: Date;
+	dateTo: Date;
+	periodicity: PeriodicityType;
+	until?: Date;
+	isPublic: boolean;
+}
 
-export const initialValues: Partial<AddEventFormValues> = {
+export const initialValues: AddEventFormValues = {
 	name: '',
 	description: '',
 	dateFrom: new Date(),

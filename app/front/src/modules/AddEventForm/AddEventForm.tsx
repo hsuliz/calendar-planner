@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Callout, Classes, Intent } from '@blueprintjs/core';
+import { Button, Classes, Intent } from '@blueprintjs/core';
 import { Tooltip2 } from '@blueprintjs/popover2';
 import { Formik, Form, Field } from 'formik';
 import PeriodicitySelect from '../InputBindings/PeriodicitySelect';
@@ -7,20 +7,22 @@ import { TextInputBinding } from '../InputBindings/TextInputBinding';
 import { TextAreaBinding } from '../InputBindings/TextAreaBinding';
 import { DateInputBinding } from '../InputBindings/DateInputBinding';
 import { CheckboxBinding } from '../InputBindings/CheckboxBinding';
+import { postFormData } from '../../api/eventsRequests';
+import { useAuth } from '../../contexts/useAuth';
 import * as C from './constants';
 import * as P from './parts';
 
 export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps) => {
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
 	const [isFormSubmitting, setIsSubmitting] = useState(false);
+	const { token } = useAuth();
 
-	const onFormSubmit = (values: Partial<C.AddEventFormValues>) => {
+	const onFormSubmit = async (values: C.AddEventFormValues) => {
 		setIsSubmitting(true);
-		console.log(values);
+		const { isSuccess, failureReason } = await postFormData(values, token);
+		console.log(isSuccess, failureReason);
 
-		setTimeout(() => {
-			setIsSubmitting(false);
-		}, 1000);
+		setIsSubmitting(false);
 	};
 
 	const initialFormValues = useMemo(() => {
