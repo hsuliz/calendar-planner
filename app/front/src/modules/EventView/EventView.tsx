@@ -10,11 +10,11 @@ import {
 	Divider,
 	Intent,
 	Tag,
-	TextArea,
 } from '@blueprintjs/core';
 import moment from 'moment';
 import PeriodicityTag from './PeriodicityTag';
 import ParticipantsSection from './ParticipantsSection/ParticipantsSection';
+import DescriptionSection from './DescriptionSection/DescriptionSection';
 
 // TODO: zweryfikować czy użytkownik może zobaczyć dany event (jeśli nie to robimy redirect na /kalendarz)
 
@@ -42,7 +42,7 @@ const EventView = (props: C.EventViewProps) => {
 					Powrót{' '}
 				</Link>
 			</P.TitleSpan>
-			<TextArea readOnly fill value={description} style={{ resize: 'none' }} />
+			<DescriptionSection description={description} />
 
 			<P.EventTimeFrameWrapper>
 				<h4>

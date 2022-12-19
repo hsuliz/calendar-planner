@@ -31,31 +31,33 @@ const UsersSuggest = () => {
 	};
 
 	return (
-		<Suggest2<User>
-			openOnKeyDown
-			resetOnClose
-			resetOnQuery
-			resetOnSelect
-			closeOnSelect
-			fill
-			inputProps={{ placeholder: 'Wpisz e-mail...' }}
-			inputValueRenderer={() => ''}
-			items={suggestions}
-			itemsEqual={H.areUsersEqual}
-			itemPredicate={H.filterUser}
-			itemRenderer={H.renderUser}
-			noResults={
-				currentQuery.length > 1 && (
-					<MenuItem
-						disabled={true}
-						text='Nie ma takiego użytkownika'
-						roleStructure='listoption'
-					/>
-				)
-			}
-			onQueryChange={onQueryChange}
-			onItemSelect={onUserSelect}
-		/>
+		<div style={{ flexGrow: 3 }}>
+			<Suggest2<User>
+				openOnKeyDown
+				resetOnClose
+				resetOnQuery
+				resetOnSelect
+				closeOnSelect
+				fill
+				inputProps={{ placeholder: 'Wpisz e-mail...' }}
+				inputValueRenderer={() => ''}
+				items={suggestions}
+				itemsEqual={H.areUsersEqual}
+				itemPredicate={H.filterUser}
+				itemRenderer={H.renderUser}
+				noResults={
+					currentQuery.length > 1 && (
+						<MenuItem
+							disabled={true}
+							text='Nie ma takiego użytkownika'
+							roleStructure='listoption'
+						/>
+					)
+				}
+				onQueryChange={onQueryChange}
+				onItemSelect={onUserSelect}
+			/>
+		</div>
 	);
 };
 

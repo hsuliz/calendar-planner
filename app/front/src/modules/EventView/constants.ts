@@ -14,7 +14,8 @@ export interface EventInfo {
 
 export const mockEventInfo: EventInfo = {
 	name: 'Moje wydarzenie',
-	description: 'To jest opis wydarzenia, może być krótki, może być długi, różnie różnie',
+	// description: 'To jest opis wydarzenia, może być krótki, może być długi, różnie różnie',
+	description: '',
 	dateFrom: new Date(),
 	dateTo: new Date(),
 	periodicity: 'weekly',
