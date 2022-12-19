@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Label } from '@blueprintjs/core';
+import { Button, Label } from '@blueprintjs/core';
 import { Tooltip2 } from '@blueprintjs/popover2';
 import { DateInput as DateInputBase, TimePrecision } from '@blueprintjs/datetime';
 import MomentLocaleUtils from 'react-day-picker/moment';
@@ -35,6 +35,10 @@ export const DateInputBinding = ({
 
 	const onChange = (selectedDate: Date | null) => {
 		setFieldValue(name, selectedDate);
+	};
+
+	const onClear = () => {
+		setFieldValue(name, undefined);
 	};
 
 	const parseDate = (str: string) => {
@@ -85,6 +89,7 @@ export const DateInputBinding = ({
 					dayPickerProps={{
 						firstDayOfWeek: 1,
 					}}
+					rightElement={value && <Button icon='cross-circle' onClick={onClear} />}
 				/>
 			</Label>
 		</Tooltip2>

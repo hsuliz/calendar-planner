@@ -1,18 +1,26 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Classes, Intent } from '@blueprintjs/core';
+import { Button, Callout, Classes, Intent } from '@blueprintjs/core';
+import { Tooltip2 } from '@blueprintjs/popover2';
 import { Formik, Form, Field } from 'formik';
 import PeriodicitySelect from '../InputBindings/PeriodicitySelect';
 import { TextInputBinding } from '../InputBindings/TextInputBinding';
 import { TextAreaBinding } from '../InputBindings/TextAreaBinding';
 import { DateInputBinding } from '../InputBindings/DateInputBinding';
+import { CheckboxBinding } from '../InputBindings/CheckboxBinding';
 import * as C from './constants';
+import * as P from './parts';
 
 export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps) => {
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
+	const [isFormSubmitting, setIsSubmitting] = useState(false);
 
-	const onFormSubmit = (values: C.AddEventFormValues) => {
+	const onFormSubmit = (values: Partial<C.AddEventFormValues>) => {
+		setIsSubmitting(true);
 		console.log(values);
-		// onModalClose();
+
+		setTimeout(() => {
+			setIsSubmitting(false);
+		}, 1000);
 	};
 
 	const initialFormValues = useMemo(() => {
@@ -56,13 +64,7 @@ export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps)
 							component={TextAreaBinding}
 						/>
 
-						<div
-							style={{
-								display: 'flex',
-								flexShrink: 1,
-								justifyContent: 'space-between',
-							}}
-						>
+						<P.DateInputsWrapper>
 							<Field
 								name='dateFrom'
 								label='Od'
@@ -77,7 +79,7 @@ export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps)
 								error={errors.dateTo}
 								component={DateInputBinding}
 							/>
-						</div>
+						</P.DateInputsWrapper>
 
 						<Field
 							name='periodicity'
@@ -85,6 +87,30 @@ export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps)
 							error={errors.periodicity}
 							component={PeriodicitySelect}
 						/>
+
+						{values.periodicity !== 'once' && (
+							<Field
+								name='until'
+								label='Data zakończenia (opcjonalnie)'
+								value={values.until}
+								error={errors.until}
+								component={DateInputBinding}
+							/>
+						)}
+						<P.PublicCheckboxWrapper>
+							<Field
+								name='isPublic'
+								label='Wydarzenie publiczne?'
+								error={errors.isPublic}
+								component={CheckboxBinding}
+							/>
+							<Tooltip2
+								usePortal={false}
+								content='Wydarzenie publiczne to takie, w którym może brać udział wiele osób. Po utworzeniu takiego wydarzenia, dostaniesz możliwość zaproszenia dodatkowych uczestników'
+							>
+								<Button icon='info-sign' minimal small />
+							</Tooltip2>
+						</P.PublicCheckboxWrapper>
 					</div>
 					<div className={Classes.DIALOG_FOOTER}>
 						<div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -93,6 +119,7 @@ export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps)
 								type='submit'
 								disabled={Object.keys(errors).length > 0}
 								intent={Intent.SUCCESS}
+								loading={isFormSubmitting}
 							>
 								Zatwierdź
 							</Button>

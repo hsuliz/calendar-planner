@@ -3,16 +3,20 @@ import * as yup from 'yup';
 import { periodicitySelectItems } from '../InputBindings/PeriodicitySelect';
 
 // prettier-ignore
-export type AddEventFormField =  'name' | 'description' | 'dateFrom' | 'dateTo' | 'periodicity';
+export type AddEventFormField =  'name' | 'description' | 'dateFrom' | 'dateTo' | 'periodicity' | 'until' | 'isPublic';
 
-export type AddEventFormValues = Record<AddEventFormField, string | Date | object>;
+export type AddEventFormValues = Record<
+	AddEventFormField,
+	string | Date | boolean | undefined
+>;
 
-export const initialValues: AddEventFormValues = {
+export const initialValues: Partial<AddEventFormValues> = {
 	name: '',
 	description: '',
 	dateFrom: new Date(),
 	dateTo: new Date(),
 	periodicity: periodicitySelectItems[0].value,
+	isPublic: false,
 };
 
 export const addEventFormValidationSchema = yup.object().shape({
@@ -20,8 +24,8 @@ export const addEventFormValidationSchema = yup.object().shape({
 		.string()
 		.required('To pole jest wymagane')
 		.min(2, 'Nazwa jest za krótka')
-		.max(20, 'Nazwa jest za długa'),
-	description: yup.string().min(2, 'Opis jest za krótki').max(300, 'Opis jest za długi'),
+		.max(30, 'Nazwa jest za długa'),
+	description: yup.string().max(300, 'Opis jest za długi'),
 	dateFrom: yup
 		.date()
 		.required('To pole jest wymagane')
@@ -37,6 +41,8 @@ export const addEventFormValidationSchema = yup.object().shape({
 			'Nie można podać daty z przeszłości'
 		),
 	periodicity: yup.string().required(),
+	until: yup.date().optional().min(new Date(), 'Nie można podać daty z przeszłości'),
+	isPublic: yup.boolean().optional(),
 });
 
 export interface AddEventFormProps {
