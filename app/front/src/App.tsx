@@ -10,10 +10,12 @@ import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import CalendarView from './modules/CalendarView/CalendarView';
 import EventView from './modules/EventView/EventView';
+import AppNavbar from './modules/Navbar/Navbar';
 
 function App() {
 	return (
 		<BrowserRouter>
+			<AppNavbar />
 			<Routes>
 				<Route path='/' element={<StartingPage />} />
 				<Route path='/login' element={<LoginPage />} />

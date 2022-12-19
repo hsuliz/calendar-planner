@@ -44,7 +44,7 @@ const CalendarView = () => {
 				style={{
 					width: '80%',
 					height: '80%',
-					margin: 'auto',
+					margin: '20px auto',
 				}}
 			>
 				<FullCalendar
