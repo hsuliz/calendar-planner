@@ -1,5 +1,6 @@
+import { Button } from '@blueprintjs/core';
 import React from 'react';
-import UsersSuggest from '../../UsersSelect/UsersSuggest';
+import UsersSuggest from '../../UsersSuggest/UsersSuggest';
 import { mockParticipants } from './constants';
 import ParticipantsTable from './ParticipantsTable';
 
@@ -24,7 +25,9 @@ const ParticipantsSection = ({ isOwner }: ParticipantsSectionProps) => {
 				}}
 			>
 				<UsersSuggest />
-				<span>lub Skopiuj link zapraszający</span>
+				<span>
+					lub <Button minimal>Skopiuj link zapraszający</Button>
+				</span>
 			</div>
 
 			<h3>Lista uczestników</h3>
