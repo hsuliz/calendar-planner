@@ -20,9 +20,18 @@ public class EventForUserService {
     public EventRepository eventRepository;
 
 
-    public void addEvent(Event event, User currentUser) {
-        event.setUser(currentUser);
-        eventRepository.save(event);
+    public void saveEvent(Event event, User currentUser) {
+        var existingEvent = eventRepository.findEventByUserAndDateFromAndDateTo(
+                currentUser,
+                event.getDateFrom(),
+                event.getDateTo()
+        ).orElse(null);
+        if (existingEvent == null) {
+            event.setUser(currentUser);
+            eventRepository.save(event);
+        } else {
+            System.out.println("Exist");
+        }
     }
 
     public Set<Event> getEvents(User user) {

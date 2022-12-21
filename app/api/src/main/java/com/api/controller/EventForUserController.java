@@ -25,7 +25,7 @@ public class EventForUserController {
 
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody Event event, Principal principal) {
-        eventForUserService.addEvent(event, userAuthService.auth(principal));
+        eventForUserService.saveEvent(event, userAuthService.auth(principal));
         return ResponseEntity.ok().build();
     }
 
