@@ -21,12 +21,8 @@ public class EventForUserService {
 
 
     public void saveEvent(Event event, User currentUser) {
-        var existingEvent = eventRepository.findEventByUserAndDateFromAndDateTo(
-                currentUser,
-                event.getDateFrom(),
-                event.getDateTo()
-        ).orElse(null);
-        if (existingEvent == null) {
+        var existingEvent = eventRepository.findEventByUserAndDateFromAndDateTo(currentUser, event.getDateFrom(), event.getDateTo()).orElse(null);
+        if (existingEvent == null && isValid(event)) {
             event.setUser(currentUser);
             eventRepository.save(event);
         } else {
@@ -34,9 +30,12 @@ public class EventForUserService {
         }
     }
 
+    private boolean isValid(Event event) {
+        return event.getDateFrom().isBefore(event.getDateTo());
+    }
+
     public Set<Event> getEvents(User user) {
-        var events = eventRepository.findEventsByUser(user).orElseThrow();
-        return events;
+        return eventRepository.findEventsByUser(user).orElseThrow();
     }
 
 }
