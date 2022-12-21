@@ -19,9 +19,6 @@ import java.util.Map;
 @Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserAuthController {
-    // #TODO
-    // /auth/login
-    // auth/registration
 
     public UserAuthService userAuthService;
 

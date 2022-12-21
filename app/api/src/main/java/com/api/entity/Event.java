@@ -1,21 +1,20 @@
 package com.api.entity;
 
 import com.api.model.Periodicity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
-@Entity(name = "events")
-@Data
-@AllArgsConstructor
+@Entity
+@Setter
+@Getter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Event {
 
     @Id
@@ -28,13 +27,18 @@ public class Event {
     private Boolean isPublic;
     private Periodicity periodicity;
 
-    public Event(String name, String description, LocalDateTime dateFrom, LocalDateTime dateTo, Boolean isPublic, Periodicity periodicity) {
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
+    public Event(String name, String description, LocalDateTime dateFrom, LocalDateTime dateTo, Boolean isPublic, Periodicity periodicity, User user) {
         this.name = name;
         this.description = description;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.isPublic = isPublic;
         this.periodicity = periodicity;
+        this.user = user;
     }
-
 }
