@@ -40,7 +40,7 @@ public class ApiApplication {
             var x = new Event(
                     "Some",
                     "dest",
-                    LocalDateTime.parse("2022-12-24T00:12:00:000".substring(0, 16)),
+                    LocalDateTime.parse("2022-12-24T23:12:02:000".substring(0, 19)),
                     LocalDateTime.parse("2022-12-24T00:12:00:000".substring(0, 16)),
                     true,
                     Periodicity.MONTHLY,

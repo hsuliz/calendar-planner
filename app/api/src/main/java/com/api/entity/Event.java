@@ -26,7 +26,6 @@ public class Event {
     private LocalDateTime dateTo;
     private Boolean isPublic;
     private Periodicity periodicity;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id")
     @JsonIgnore
@@ -40,5 +39,17 @@ public class Event {
         this.isPublic = isPublic;
         this.periodicity = periodicity;
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", dateFrom=" + dateFrom +
+                ", dateTo=" + dateTo +
+                ", isPublic=" + isPublic +
+                ", periodicity=" + periodicity;
     }
 }

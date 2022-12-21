@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+
 @Service
 @AllArgsConstructor
 public class UserAuthService {
@@ -34,16 +36,20 @@ public class UserAuthService {
         user.setPassword(passwordEncoder.encode(nonEncodedPassword));
         userRepository.save(user);
 
-        return authenticateUser(new LoginRequest(user.getEmail(), nonEncodedPassword));
+        return generateToken(new LoginRequest(user.getEmail(), nonEncodedPassword));
     }
 
-    public String authenticateUser(LoginRequest clientLogin) {
+    public String generateToken(LoginRequest clientLogin) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
                         clientLogin.email(),
                         clientLogin.password()));
 
         return tokenService.generateToken(authentication);
+    }
+
+    public User auth(Principal principal) {
+        return userRepository.findByEmail(principal.getName()).orElseThrow();
     }
 
 }

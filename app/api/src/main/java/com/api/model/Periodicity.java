@@ -1,5 +1,12 @@
 package com.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum Periodicity {
-    DAILY, WEEKLY, MONTHLY
+    @JsonProperty("daily")
+    DAILY,
+    @JsonProperty("weekly")
+    WEEKLY,
+    @JsonProperty("monthly")
+    MONTHLY
 }

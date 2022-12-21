@@ -22,10 +22,11 @@ public class UserAuthController {
 
     public UserAuthService userAuthService;
 
+    public Map<String, String> outJson;
 
     @PostMapping("/registration")
     public ResponseEntity<Map<String, String>> createUser(@RequestBody User user) {
-        Map<String, String> outJson = new HashMap<>();
+        outJson = new HashMap<>();
         String token;
 
         try {
@@ -41,9 +42,9 @@ public class UserAuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> createUsersToken(@RequestBody LoginRequest user) {
-        Map<String, String> outJson = new HashMap<>();
+        outJson = new HashMap<>();
 
-        outJson.put("token", userAuthService.authenticateUser(user));
+        outJson.put("token", userAuthService.generateToken(user));
 
         return new ResponseEntity<>(outJson, HttpStatus.OK);
     }
