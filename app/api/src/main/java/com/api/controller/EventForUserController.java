@@ -5,6 +5,8 @@ import com.api.service.EventForUserService;
 import com.api.service.UserAuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,12 @@ public class EventForUserController {
 
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody Event event, Principal principal) {
-        eventForUserService.saveEvent(event, userAuthService.auth(principal));
+        try {
+            eventForUserService.saveEvent(event, userAuthService.auth(principal));
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
         return ResponseEntity.ok().build();
     }
 

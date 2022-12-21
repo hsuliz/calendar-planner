@@ -26,7 +26,7 @@ public class EventForUserService {
             event.setUser(currentUser);
             eventRepository.save(event);
         } else {
-            System.out.println("Exist");
+            throw new RuntimeException();
         }
     }
 
