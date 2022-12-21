@@ -1,6 +1,5 @@
 package com.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,25 +8,32 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "users")
+import java.time.Instant;
+
+enum Periodicity {
+        DAILY, WEEKLY, MONTHLY
+}
+
+@Entity(name = "events")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
+    private String name;
 
-    private String lastName;
+    private String description;
 
-    private String email;
+    private Instant dateFrom;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    private Instant dateTo;
 
+    private Boolean isPublic;
 
+    private Periodicity periodicity;
 
 }
