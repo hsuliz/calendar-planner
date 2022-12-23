@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { validateToken } from '../api/requests';
 import {
-	getJWT as getJWTFromLS,
-	setJWT as setJWTinLS,
-	removeJWT as removeJWTFromLS,
+	getJWT as getTokenFromLS,
+	setJWT as setTokenInLS,
+	removeJWT as removeTokenFromLS,
 } from '../utils/manageJWT';
 
 interface IAuthContext {
@@ -22,12 +22,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 	const onSetToken = (jwt: string) => {
 		setToken(jwt);
-		setJWTinLS(jwt);
+		setTokenInLS(jwt);
 	};
 
 	const resetToken = () => {
 		setToken('');
-		removeJWTFromLS();
+		removeTokenFromLS();
 	};
 
 	const onLogout = () => {
@@ -48,7 +48,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	};
 
 	useEffect(() => {
-		const jwt = getJWTFromLS();
+		const jwt = getTokenFromLS();
 
 		if (jwt) {
 			handleTokenValidation(jwt);

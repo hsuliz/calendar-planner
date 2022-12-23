@@ -83,7 +83,7 @@ export const loginRequest = async (
 			if (status?.toString()[0] === '4') {
 				return {
 					success: false,
-					failureReason: e.response?.data.failureReason,
+					failureReason: e.response?.data.failureReason ?? 'Niepoprawny login lub hasło',
 				};
 			}
 		}

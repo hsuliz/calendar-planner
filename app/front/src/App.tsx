@@ -11,20 +11,23 @@ import RegistrationPage from './pages/RegistrationPage';
 import CalendarView from './modules/CalendarView/CalendarView';
 import EventView from './modules/EventView/EventView';
 import AppNavbar from './modules/Navbar/Navbar';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
-	return (
-		<BrowserRouter>
-			<AppNavbar />
-			<Routes>
-				<Route path='/' element={<StartingPage />} />
-				<Route path='/login' element={<LoginPage />} />
-				<Route path='/rejestracja' element={<RegistrationPage />} />
-				<Route path='/kalendarz' element={<CalendarView />} />
-				<Route path='/kalendarz/:id' element={<EventView />} />
-			</Routes>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppNavbar />
+        <Routes>
+          <Route path='/' element={<StartingPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/rejestracja' element={<RegistrationPage />} />
+          <Route path='/kalendarz' element={<CalendarView />} />
+          <Route path='/kalendarz/:id' element={<EventView />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
 export default App;
