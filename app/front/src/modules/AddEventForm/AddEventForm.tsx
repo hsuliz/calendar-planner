@@ -22,6 +22,15 @@ export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps)
 		const { isSuccess, failureReason } = await postFormData(values, token);
 		console.log(isSuccess, failureReason);
 
+		if (isSuccess) {
+			// close modal, show toast
+			onModalClose();
+		}
+
+		if (failureReason) {
+			// stay in modal, show toast with error or callout with error
+		}
+
 		setIsSubmitting(false);
 	};
 

@@ -11,11 +11,16 @@ import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'; // 
 import './bootstrap-theme/bootstrap.min.css';
 import { AddEventModal } from '../AddEventModal/AddEventModal';
 import * as C from './constants';
+import { getEvents } from '../../api/eventsRequests';
+import { useAuth } from '../../contexts/useAuth';
+import { useQuery } from 'react-query';
 
 const CalendarView = () => {
 	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 	const [clickedDate, setClickedDate] = useState<Date>();
+	const { token } = useAuth();
+	const { data: events } = useQuery(['events', token, isOpen], () => getEvents(token));
 
 	// to initially render calendar in previously seen view (not always in dayGridMonth)
 	const initialView = localStorage.getItem('calendarView') || 'dayGridMonth';
@@ -50,7 +55,7 @@ const CalendarView = () => {
 				<FullCalendar
 					// PLUGINS AND EVENTS CONFIG
 					plugins={[dayGridPlugin, interactionPlugin, listPlugin, rrulePlugin]}
-					events={C.mockedEvents}
+					events={events || C.mockedEvents}
 					// CLICK AND CHANGE HANDLERS
 					dateClick={handleDateClick}
 					eventClick={onEventClick}

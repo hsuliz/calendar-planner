@@ -5,6 +5,8 @@ import '@blueprintjs/popover2/lib/css/blueprint-popover2.css';
 import '@blueprintjs/select/lib/css/blueprint-select.css';
 import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query'
+
 import StartingPage from './pages/StartingPage';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
@@ -17,6 +19,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <QueryClientProvider client={new QueryClient()}>
         <AppNavbar />
         <Routes>
           <Route path='/' element={<StartingPage />} />
@@ -25,6 +28,7 @@ function App() {
           <Route path='/kalendarz' element={<CalendarView />} />
           <Route path='/kalendarz/:id' element={<EventView />} />
         </Routes>
+        </QueryClientProvider>
       </AuthProvider>
     </BrowserRouter>
   );

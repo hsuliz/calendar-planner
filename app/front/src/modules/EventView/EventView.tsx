@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import * as P from './parts';
-import * as C from './constants';
 import {
 	Button,
 	Callout,
@@ -12,9 +10,14 @@ import {
 	Tag,
 } from '@blueprintjs/core';
 import moment from 'moment';
+// import { useQuery } from 'react-query';
 import PeriodicityTag from './PeriodicityTag';
 import ParticipantsSection from './ParticipantsSection/ParticipantsSection';
 import DescriptionSection from './DescriptionSection/DescriptionSection';
+// import { getEvent } from '../../api/eventsRequests';
+// import { useAuth } from '../../contexts/useAuth';
+import * as P from './parts';
+import * as C from './constants';
 
 // TODO: zweryfikować czy użytkownik może zobaczyć dany event (jeśli nie to robimy redirect na /kalendarz)
 
@@ -23,6 +26,9 @@ const EventView = (props: C.EventViewProps) => {
 	const { name, description, dateFrom, dateTo, periodicity, isPublic, isOwner } =
 		C.mockEventInfo;
 	const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
+	// const { token } = useAuth();
+	// const { data } = useQuery(['event', eventId], () => getEvent(eventId!, token))
+	// console.log(data);
 
 	const onRemoveEvent = () => {
 		setIsRemoveDialogOpen(true);
