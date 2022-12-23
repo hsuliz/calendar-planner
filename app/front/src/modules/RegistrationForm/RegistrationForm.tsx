@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Callout, Intent } from '@blueprintjs/core';
 import * as P from './parts';
 import { Formik, Form, Field } from 'formik';
@@ -7,11 +7,11 @@ import { TextInputBinding } from '../InputBindings/TextInputBinding';
 import { PasswordInputBinding } from '../InputBindings/PasswordInputBinding';
 import { Link, Navigate } from 'react-router-dom';
 import { registrationRequest } from '../../api/requests';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/useAuth';
 import { CheckboxBinding } from '../InputBindings/CheckboxBinding';
 
 function RegistrationForm() {
-	const { isLoggedIn, setIsLoggedIn, setToken } = useContext(AuthContext);
+	const { isLoggedIn, setIsLoggedIn, setToken } = useAuth();
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [wasFormTouched, setWasFormTouched] = useState(false);
@@ -53,9 +53,9 @@ function RegistrationForm() {
 
 		// Success scenario
 		if (success) {
-			setToken(token);
 			setFormSuccess(true);
 			setIsLoggedIn(true);
+			setToken(token);
 			return;
 		}
 

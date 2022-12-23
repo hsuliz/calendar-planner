@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Callout, Intent } from '@blueprintjs/core';
 import * as P from './parts';
 import { Formik, Form, Field } from 'formik';
@@ -7,10 +7,10 @@ import { TextInputBinding } from '../InputBindings/TextInputBinding';
 import { PasswordInputBinding } from '../InputBindings/PasswordInputBinding';
 import { Link, Navigate } from 'react-router-dom';
 import { loginRequest } from '../../api/requests';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/useAuth';
 
 function LoginForm() {
-	const { isLoggedIn, setIsLoggedIn, setToken } = useContext(AuthContext);
+	const { isLoggedIn, setIsLoggedIn, setToken } = useAuth();
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [wasFormTouched, setWasFormTouched] = useState(false);
