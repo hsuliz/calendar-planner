@@ -1,4 +1,4 @@
-package com.api.controller;
+package com.api.controller.event;
 
 import com.api.entity.Event;
 import com.api.service.EventForUserService;
@@ -17,21 +17,16 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class EventForUserController {
+public class EventUserController {
 
     public EventForUserService eventForUserService;
 
     public UserAuthService userAuthService;
 
 
-    // TODO
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody Event event, Principal principal) {
-        try {
-            eventForUserService.saveEvent(event, userAuthService.auth(principal));
-        } catch (Exception e) {
-            return ResponseEntity.unprocessableEntity().body(Map.of("message", "Event exists!!"));
-        }
+        eventForUserService.saveEvent(event, userAuthService.auth(principal));
         return ResponseEntity.ok(Map.of("message", "Event added!!"));
     }
 

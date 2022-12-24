@@ -26,7 +26,7 @@ public class EventForUserService {
             event.setUser(currentUser);
             eventRepository.save(event);
         } else {
-            throw new RuntimeException();
+            throw new IllegalStateException();
         }
     }
 

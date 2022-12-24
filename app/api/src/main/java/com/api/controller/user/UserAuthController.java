@@ -1,4 +1,4 @@
-package com.api.controller;
+package com.api.controller.user;
 
 import com.api.entity.User;
 import com.api.model.LoginRequest;
