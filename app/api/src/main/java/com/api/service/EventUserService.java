@@ -4,6 +4,7 @@ import com.api.entity.Event;
 import com.api.entity.User;
 import com.api.repository.EventRepository;
 import com.api.repository.UserRepository;
+import com.api.service.auth.UserAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class EventForUserService {
+public class EventUserService {
 
     public UserAuthService userAuthService;
 

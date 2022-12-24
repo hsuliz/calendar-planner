@@ -1,8 +1,9 @@
-package com.api.service;
+package com.api.service.auth;
 
 import com.api.entity.User;
 import com.api.model.LoginRequest;
 import com.api.repository.UserRepository;
+import com.api.service.TokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +30,7 @@ public class UserAuthService {
         userRepository
                 .findByEmail(user.getEmail())
                 .ifPresent(u -> {
-                    throw new RuntimeException("User with email already exist!!");
+                    throw new IllegalStateException("User with email already exist!!");
                 });
 
         var nonEncodedPassword = user.getPassword();

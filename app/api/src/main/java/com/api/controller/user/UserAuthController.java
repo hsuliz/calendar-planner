@@ -2,7 +2,7 @@ package com.api.controller.user;
 
 import com.api.entity.User;
 import com.api.model.LoginRequest;
-import com.api.service.UserAuthService;
+import com.api.service.auth.UserAuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,11 @@ public class UserAuthController {
         outJson.put("token", userAuthService.generateToken(user));
 
         return new ResponseEntity<>(outJson, HttpStatus.OK);
+    }
+
+    @GetMapping("/validateToken")
+    public void validateUser(Principal principal) {
+        userAuthService.auth(principal);
     }
 
 }

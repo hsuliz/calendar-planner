@@ -1,8 +1,8 @@
 package com.api.controller.event;
 
 import com.api.entity.Event;
-import com.api.service.EventForUserService;
-import com.api.service.UserAuthService;
+import com.api.service.EventUserService;
+import com.api.service.auth.UserAuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +19,20 @@ import java.util.Set;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventUserController {
 
-    public EventForUserService eventForUserService;
+    public EventUserService eventUserService;
 
     public UserAuthService userAuthService;
 
 
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody Event event, Principal principal) {
-        eventForUserService.saveEvent(event, userAuthService.auth(principal));
+        eventUserService.saveEvent(event, userAuthService.auth(principal));
         return ResponseEntity.ok(Map.of("message", "Event added!!"));
     }
 
     @GetMapping
     public Map<String, Set<Event>> readAllEvents(Principal principal) {
-        return Map.of("events", eventForUserService.getEvents(userAuthService.auth(principal)));
+        return Map.of("events", eventUserService.getEvents(userAuthService.auth(principal)));
     }
 
 }
