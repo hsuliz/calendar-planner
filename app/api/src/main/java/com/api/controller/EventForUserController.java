@@ -5,12 +5,11 @@ import com.api.service.EventForUserService;
 import com.api.service.UserAuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -25,20 +24,20 @@ public class EventForUserController {
     public UserAuthService userAuthService;
 
 
+    // TODO
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody Event event, Principal principal) {
         try {
             eventForUserService.saveEvent(event, userAuthService.auth(principal));
         } catch (Exception e) {
-            return ResponseEntity.unprocessableEntity().build();
+            return ResponseEntity.unprocessableEntity().body(Map.of("message", "Event exists!!"));
         }
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(Map.of("message", "Event added!!"));
     }
 
     @GetMapping
-    public Set<Event> readAllEvents(Principal principal) {
-        return eventForUserService.getEvents(userAuthService.auth(principal));
+    public Map<String, Set<Event>> readAllEvents(Principal principal) {
+        return Map.of("events", eventForUserService.getEvents(userAuthService.auth(principal)));
     }
 
 }
