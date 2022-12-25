@@ -18,7 +18,7 @@ const AuthContext = React.createContext<IAuthContext>({} as IAuthContext);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [token, setToken] = useState('');
+	const [token, setToken] = useState(getTokenFromLS() || '');
 
 	const onSetToken = (jwt: string) => {
 		setToken(jwt);

@@ -65,7 +65,7 @@ export const postFormData = async (
 };
 
 export const mapEventsToFullCalendarFormat = (events: Event[]): EventSourceInput => {
-	return events.map((event) => ({
+	return events?.map((event) => ({
 		title: event.name,
 		id: String(event.id),
 		start: event.dateFrom,
@@ -77,17 +77,21 @@ export const mapEventsToFullCalendarFormat = (events: Event[]): EventSourceInput
 				until: event.until,
 			}
 		}))
-	}))
+	})) ?? [];
+}
+
+export type EventsApiReturnValue = {
+	events: Event[];
 }
 
 export const getEvents = async (token: string): Promise<EventSourceInput> => {
-	const { data } = await axios.get<Event[]>('/event', {
+	const { data } = await axios.get<EventsApiReturnValue>('/event', {
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
 	});
 
-	return mapEventsToFullCalendarFormat(data);
+	return mapEventsToFullCalendarFormat(data.events || []);
 }
 
 export const getEvent = async (eventId: string, token: string): Promise<Event> => {
