@@ -40,6 +40,10 @@ export const addEventFormValidationSchema = yup.object().shape({
 		.min(
 			moment(new Date()).subtract(1, 'minute').toDate(),
 			'Nie można podać daty z przeszłości'
+		)
+		.max(
+			new Date(new Date().setFullYear(2050)),
+			'Nie wybiegajmy za daleko w przyszłość'
 		),
 	dateTo: yup
 		.date()
@@ -47,9 +51,32 @@ export const addEventFormValidationSchema = yup.object().shape({
 		.min(
 			moment(new Date()).subtract(1, 'minute').toDate(),
 			'Nie można podać daty z przeszłości'
-		),
+		)
+		.max(
+			new Date(new Date().setFullYear(2050)),
+			'Nie wybiegajmy za daleko w przyszłość'
+		)
+		.when('dateFrom', (dateFrom, field) => {
+			return field.min(
+				dateFrom,
+				'Wydarzenie nie może się skończyć przed rozpoczęciem!'
+			);
+		}),
 	periodicity: yup.string().required(),
-	until: yup.date().optional().min(new Date(), 'Nie można podać daty z przeszłości'),
+	until: yup
+		.date()
+		.optional()
+		.min(new Date(), 'Nie można podać daty z przeszłości')
+		.max(
+			new Date(new Date().setFullYear(2050)),
+			'Nie wybiegajmy za daleko w przyszłość'
+		)
+		.when('dateFrom', (dateFrom, field) => {
+			return field.min(
+				dateFrom,
+				'Wydarzenie nie może się skończyć przed rozpoczęciem!'
+			);
+		}),
 	isPublic: yup.boolean().optional(),
 });
 
