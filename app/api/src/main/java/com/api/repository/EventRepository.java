@@ -12,8 +12,8 @@ import java.util.Set;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    Optional<Set<Event>> findEventsByUser(User user);
+    Optional<Set<Event>> findEventsByOwner(User user);
 
-    Optional<Event> findEventByUserAndDateFromAndDateTo(User user, LocalDateTime dateFrom, LocalDateTime dateTo);
+    Optional<Event> findEventByOwnerAndDateFromAndDateTo(User user, LocalDateTime dateFrom, LocalDateTime dateTo);
 
 }

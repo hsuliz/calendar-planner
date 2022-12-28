@@ -22,9 +22,9 @@ public class EventUserService {
 
 
     public void saveEvent(Event event, User currentUser) {
-        var existingEvent = eventRepository.findEventByUserAndDateFromAndDateTo(currentUser, event.getDateFrom(), event.getDateTo()).orElse(null);
+        var existingEvent = eventRepository.findEventByOwnerAndDateFromAndDateTo(currentUser, event.getDateFrom(), event.getDateTo()).orElse(null);
         if (existingEvent == null && isValid(event)) {
-            event.setUser(currentUser);
+            event.setOwner(currentUser);
             eventRepository.save(event);
         } else {
             throw new IllegalStateException();
@@ -36,7 +36,7 @@ public class EventUserService {
     }
 
     public Set<Event> getEvents(User user) {
-        return eventRepository.findEventsByUser(user).orElseThrow();
+        return eventRepository.findEventsByOwner(user).orElseThrow();
     }
 
 }

@@ -11,7 +11,8 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "users")
+@Entity
+@Table(name = "users")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -31,7 +32,7 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Event> event = new HashSet<>();
 
@@ -41,5 +42,4 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
 }

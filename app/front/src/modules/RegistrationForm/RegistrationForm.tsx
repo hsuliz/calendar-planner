@@ -19,7 +19,7 @@ function RegistrationForm() {
 	const [formSuccess, setFormSuccess] = useState(false); // here we only mark if form submitting was successful
 
 	if (isLoggedIn && !wasFormTouched) {
-		// only if user enters /login page manually
+		// only if owner enters /login page manually
 		return <Navigate to='/kalendarz' replace={true} />;
 	}
 

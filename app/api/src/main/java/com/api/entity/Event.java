@@ -11,6 +11,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "events")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -20,16 +21,23 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String description;
+
     private LocalDateTime dateFrom;
+
     private LocalDateTime dateTo;
+
     private Boolean isPublic;
+
     private Periodicity periodicity;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "owner_id")
     @JsonIgnore
-    private User user;
+    private User owner;
 
     public Event(String name, String description, LocalDateTime dateFrom, LocalDateTime dateTo, Boolean isPublic, Periodicity periodicity, User user) {
         this.name = name;
@@ -38,7 +46,7 @@ public class Event {
         this.dateTo = dateTo;
         this.isPublic = isPublic;
         this.periodicity = periodicity;
-        this.user = user;
+        this.owner = user;
     }
 
     @Override
