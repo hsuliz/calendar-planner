@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -35,18 +37,21 @@ public class Event {
     private Periodicity periodicity;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "owner_id")
     @JsonIgnore
     private User owner;
 
-    public Event(String name, String description, LocalDateTime dateFrom, LocalDateTime dateTo, Boolean isPublic, Periodicity periodicity, User user) {
+    @ManyToMany(mappedBy = "eventSet")
+    private Set<User> userSet = new HashSet<>();
+
+
+    public Event(String name, String description, LocalDateTime dateFrom, LocalDateTime dateTo, Boolean isPublic, Periodicity periodicity, User owner) {
         this.name = name;
         this.description = description;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.isPublic = isPublic;
         this.periodicity = periodicity;
-        this.owner = user;
+        this.owner = owner;
     }
 
     @Override

@@ -27,9 +27,6 @@ public class ApiApplication {
             UserRepository userRepository
     ) {
         return args -> {
-
-            DateTimeFormatter formatter
-                    = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             var user = new User(
                     "Sahsa",
                     "Dima",

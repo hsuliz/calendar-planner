@@ -36,6 +36,10 @@ public class User {
     @JsonIgnore
     private Set<Event> event = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_to_event")
+    private Set<Event> eventSet = new HashSet<>();
+
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
