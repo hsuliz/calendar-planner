@@ -36,8 +36,7 @@ public class User {
     @JsonIgnore
     private Set<Event> event = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_to_event")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "userSet")
     private Set<Event> eventSet = new HashSet<>();
 
     public User(String firstName, String lastName, String email, String password) {
@@ -45,5 +44,16 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

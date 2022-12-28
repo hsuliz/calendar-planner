@@ -9,11 +9,13 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 @SpringBootApplication
+@Transactional
 public class ApiApplication {
 
     public static void main(String[] args) {
@@ -22,6 +24,7 @@ public class ApiApplication {
 
 
     @Bean
+
     public ApplicationRunner applicationStartupRunner(
             EventRepository eventRepository,
             UserRepository userRepository
@@ -33,6 +36,32 @@ public class ApiApplication {
                     "sasha@g",
                     "imastringpasswor"
             );
+            var users = Set.of(
+                    new User(
+                            "Sahsa",
+                            "Dima",
+                            "sasha@g",
+                            "imastringpasswor"
+                    ),
+                    new User(
+                            "Sahsa",
+                            "Dima",
+                            "sasha@g",
+                            "imastringpasswor"
+                    ), new User(
+                            "Sahsa",
+                            "Dima",
+                            "sasha@g",
+                            "imastringpasswor"
+                    ), new User(
+                            "Sahsa",
+                            "Dima",
+                            "sasha@g",
+                            "imastringpasswor"
+                    )
+            );
+            userRepository.save(user);
+            userRepository.saveAll(users);
 
             var x = new Event(
                     "Some",
@@ -43,9 +72,12 @@ public class ApiApplication {
                     Periodicity.MONTHLY,
                     user
             );
-            userRepository.save(user);
+            x.setUserSet(users);
             eventRepository.save(x);
-            System.out.println(eventRepository.findAll());
+            x = eventRepository.findById(1L).get();
+            System.out.println(x.getOwner().getId());
+            //System.out.println(x.getOwner());
+            System.out.println(x.getUserSet());
         };
     }
 

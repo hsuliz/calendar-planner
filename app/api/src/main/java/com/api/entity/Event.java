@@ -40,7 +40,11 @@ public class Event {
     @JsonIgnore
     private User owner;
 
-    @ManyToMany(mappedBy = "eventSet")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "course_like",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> userSet = new HashSet<>();
 
 
