@@ -1,12 +1,15 @@
 package com.api.service.event;
 
-import com.api.exception.EventNotFoundException;
+import com.api.entity.User;
 import com.api.exception.UserExistsException;
 import com.api.exception.UserNotFoundException;
 import com.api.repository.EventRepository;
 import com.api.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Service
@@ -28,6 +31,23 @@ public class EventUserService {
 
         event.getUserSet().add(user);
         eventRepository.save(event);
+    }
+
+    public Set<User> getSuggestUsers(Long eventId) {
+        eventService.getEvent(eventId);
+        var users = userRepository.findAll();
+
+        Set<User> endSet = new HashSet<>();
+
+        users.forEach(u -> {
+            u.getEvent().forEach(e -> {
+                if (!e.getId().equals(eventId)) {
+                    endSet.add(u);
+                }
+            });
+        });
+
+        return endSet;
     }
 
 }

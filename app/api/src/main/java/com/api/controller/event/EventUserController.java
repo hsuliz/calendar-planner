@@ -25,16 +25,31 @@ public class EventUserController {
     @PostMapping("/addUser")
     public ResponseEntity<String> createUser(@PathVariable Long eventId,
                                              @RequestBody Data data,
-                                             Principal principal
-    ) {
+                                             Principal principal) {
+        ResponseEntity<String> build = getStringResponseEntity(eventId, principal);
+        if (build != null) return build;
 
-        if (!eventService.isOwner(principal, eventId)) {
-            return ResponseEntity.status(401).build();
-        }
         eventUserService.addUserToEvent(
                 data.email(), eventId
         );
         return ResponseEntity.ok("Added!!");
+    }
+
+    private ResponseEntity<String> getStringResponseEntity(Long eventId, Principal principal) {
+        if (!eventService.isOwner(principal, eventId)) {
+            return ResponseEntity.status(401).build();
+        }
+        return null;
+    }
+
+    @GetMapping
+    public ResponseEntity<?> readSuggestUsers(
+            @PathVariable Long eventId,
+            Principal principal) {
+        ResponseEntity<String> build = getStringResponseEntity(eventId, principal);
+        if (build != null) return build;
+
+        return ResponseEntity.ok(eventUserService.getSuggestUsers(eventId));
     }
 
     private record Data(String email) {
