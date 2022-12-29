@@ -27,6 +27,7 @@ public class EventUserController {
                                              @RequestBody Data data,
                                              Principal principal
     ) {
+
         if (!eventService.isOwner(principal, eventId)) {
             return ResponseEntity.status(401).build();
         }

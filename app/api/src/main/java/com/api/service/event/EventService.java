@@ -2,6 +2,7 @@ package com.api.service.event;
 
 import com.api.entity.Event;
 import com.api.entity.User;
+import com.api.exception.EventNotFoundException;
 import com.api.repository.EventRepository;
 import com.api.repository.UserRepository;
 import com.api.service.auth.UserAuthService;
@@ -34,7 +35,7 @@ public class EventService {
     }
 
     public boolean isOwner(Principal principal, Long eventId) {
-        var event = eventRepository.findById(eventId).orElseThrow();
+        var event = getEvent(eventId);
         var user = userRepository.findByEmail(principal.getName()).orElseThrow();
         return Objects.equals(event.getOwner().getId(), user.getId());
     }
@@ -48,7 +49,7 @@ public class EventService {
     }
 
     public Event getEvent(Long eventId) {
-        return eventRepository.findById(eventId).orElseThrow();
+        return eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
     }
 
 }

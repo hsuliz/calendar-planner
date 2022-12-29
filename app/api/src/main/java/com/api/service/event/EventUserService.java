@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class EventUserService {
 
-    private final UserRepository userRepository;
-    private final EventRepository eventRepository;
+    public final UserRepository userRepository;
+    public final EventRepository eventRepository;
+
+    public final EventService eventService;
 
     public void addUserToEvent(String userEmail, Long eventId) {
-        var event = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
+        var event = eventService.getEvent(eventId);
         var user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
 
         if (event.getUserSet().contains(user)) {
