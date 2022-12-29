@@ -1,4 +1,4 @@
-package com.api.service;
+package com.api.service.event;
 
 import com.api.entity.Event;
 import com.api.entity.User;
@@ -8,11 +8,13 @@ import com.api.service.auth.UserAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class EventUserService {
+public class EventService {
 
     public UserAuthService userAuthService;
 
@@ -29,6 +31,12 @@ public class EventUserService {
         } else {
             throw new IllegalStateException();
         }
+    }
+
+    public boolean isOwner(Principal principal, Long eventId) {
+        var event = eventRepository.findById(eventId).orElseThrow();
+        var user = userRepository.findByEmail(principal.getName()).orElseThrow();
+        return Objects.equals(event.getOwner().getId(), user.getId());
     }
 
     private boolean isValid(Event event) {

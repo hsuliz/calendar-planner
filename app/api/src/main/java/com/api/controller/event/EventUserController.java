@@ -1,59 +1,42 @@
 package com.api.controller.event;
 
-import com.api.entity.Event;
-import com.api.service.EventUserService;
 import com.api.service.auth.UserAuthService;
+import com.api.service.event.EventService;
+import com.api.service.event.EventUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BooleanSupplier;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/event/{eventId}")
 @AllArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventUserController {
 
-    public EventUserService eventUserService;
 
-    public UserAuthService userAuthService;
+    public final EventUserService eventUserService;
+    public final UserAuthService userAuthService;
+    public final EventService eventService;
 
-
-    @PostMapping
-    public ResponseEntity<?> createEvent(@RequestBody Event event, Principal principal) {
-        eventUserService.saveEvent(event, userAuthService.auth(principal));
-        return ResponseEntity.ok(Map.of("message", "Event added!!"));
-    }
-
-    @GetMapping
-    public Map<String, Set<Event>> readAllEvents(Principal principal) {
-        return Map.of("events", eventUserService.getEvents(userAuthService.auth(principal)));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> readEvent(Principal principal, @PathVariable Long id) {
-        var event = eventUserService.getEvent(id);
-        var user = userAuthService.auth(principal);
-        BooleanSupplier isOwner = () -> event.getOwner().getEmail().equals(principal.getName());
-        BooleanSupplier isContains = () -> event.getUserSet().contains(user);
-
-        if (!isContains.getAsBoolean() && !isOwner.getAsBoolean()) {
-            return ResponseEntity.status(404).build();
+    @PostMapping("/addUser")
+    public ResponseEntity<String> createUser(@PathVariable Long eventId,
+                                             @RequestBody Data data,
+                                             Principal principal
+    ) {
+        if (!eventService.isOwner(principal, eventId)) {
+            return ResponseEntity.status(401).build();
         }
+        eventUserService.addUserToEvent(
+                data.email(), eventId
+        );
+        return ResponseEntity.ok("Added!!");
+    }
 
-        return ResponseEntity.ok(Map.of(
-                "public", event.getIsPublic(),
-                "isOwner", isOwner.getAsBoolean(),
-                "inviteCode", event.hashCode(),
-                "owner", event.getOwner(),
-                "list", event.getUserSet()
-        ));
+    private record Data(String email) {
     }
 
 }
