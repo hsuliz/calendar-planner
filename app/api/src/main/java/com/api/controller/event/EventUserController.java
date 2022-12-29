@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 @RestController
 @RequestMapping("/event")
@@ -33,6 +34,26 @@ public class EventUserController {
     @GetMapping
     public Map<String, Set<Event>> readAllEvents(Principal principal) {
         return Map.of("events", eventUserService.getEvents(userAuthService.auth(principal)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, ?>> readEvent(Principal principal, @PathVariable Long id) {
+        var event = eventUserService.getEvent(id);
+        var user = userAuthService.auth(principal);
+        BooleanSupplier isOwner = () -> event.getOwner().getEmail().equals(principal.getName());
+        BooleanSupplier isContains = () -> event.getUserSet().contains(user);
+
+        if (!isContains.getAsBoolean() && !isOwner.getAsBoolean()) {
+            return ResponseEntity.status(404).build();
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "public", event.getIsPublic(),
+                "isOwner", isOwner.getAsBoolean(),
+                "inviteCode", event.hashCode(),
+                "owner", event.getOwner(),
+                "list", event.getUserSet()
+        ));
     }
 
 }

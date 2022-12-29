@@ -39,4 +39,8 @@ public class EventUserService {
         return eventRepository.findEventsByOwner(user).orElseThrow();
     }
 
+    public Event getEvent(Long eventId) {
+        return eventRepository.findById(eventId).orElseThrow();
+    }
+
 }

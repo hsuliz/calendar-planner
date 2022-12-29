@@ -37,6 +37,7 @@ public class User {
     private Set<Event> event = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "userSet")
+    @JsonIgnore
     private Set<Event> eventSet = new HashSet<>();
 
     public User(String firstName, String lastName, String email, String password) {

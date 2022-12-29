@@ -47,6 +47,9 @@ public class Event {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> userSet = new HashSet<>();
 
+    @Transient
+    private String inviteCode;
+
 
     public Event(String name, String description, LocalDateTime dateFrom, LocalDateTime dateTo, Boolean isPublic, Periodicity periodicity, User owner) {
         this.name = name;
