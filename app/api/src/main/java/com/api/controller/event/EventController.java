@@ -1,8 +1,8 @@
 package com.api.controller.event;
 
 import com.api.entity.Event;
-import com.api.service.event.EventService;
 import com.api.service.auth.UserAuthService;
+import com.api.service.event.EventService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BooleanSupplier;
 
 @RestController
 @RequestMapping("/event")
@@ -40,22 +39,20 @@ public class EventController {
     public ResponseEntity<Map<String, ?>> readEvent(Principal principal, @PathVariable Long id) {
         var event = eventService.getEvent(id);
         var user = userAuthService.auth(principal);
-        BooleanSupplier isOwner = () -> event.getOwner().getEmail().equals(principal.getName());
-        BooleanSupplier isContains = () -> event.getUserSet().contains(user);
+        var isOwner = event.getOwner().getEmail().equals(principal.getName());
+        var isContains = event.getUserSet().contains(user);
 
-        if (!isContains.getAsBoolean() && !isOwner.getAsBoolean()) {
+        if (!isContains && !isOwner) {
             return ResponseEntity.status(404).build();
         }
 
         return ResponseEntity.ok(Map.of(
                 "public", event.getIsPublic(),
-                "isOwner", isOwner.getAsBoolean(),
+                "isOwner", isOwner,
                 "inviteCode", event.hashCode(),
                 "owner", event.getOwner(),
                 "list", event.getUserSet()
         ));
     }
-
-
 
 }

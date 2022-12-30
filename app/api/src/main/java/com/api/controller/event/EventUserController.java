@@ -17,10 +17,12 @@ import java.security.Principal;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventUserController {
 
-
     public final EventUserService eventUserService;
+
     public final UserAuthService userAuthService;
+
     public final EventService eventService;
+
 
     @PostMapping("/addUser")
     public ResponseEntity<String> createUser(@PathVariable Long eventId,
@@ -42,7 +44,7 @@ public class EventUserController {
         return null;
     }
 
-    @GetMapping
+    @GetMapping("/suggest")
     public ResponseEntity<?> readSuggestUsers(
             @PathVariable Long eventId,
             Principal principal) {
