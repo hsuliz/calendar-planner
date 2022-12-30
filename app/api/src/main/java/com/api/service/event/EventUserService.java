@@ -39,13 +39,11 @@ public class EventUserService {
 
         Set<User> endSet = new HashSet<>();
 
-        users.forEach(u -> {
-            u.getEvent().forEach(e -> {
-                if (!e.getId().equals(eventId)) {
-                    endSet.add(u);
-                }
-            });
-        });
+        users.forEach(u -> u.getEvent().forEach(e -> {
+            if (e.getId().equals(eventId)) {
+                endSet.add(u);
+            }
+        }));
 
         return endSet;
     }
