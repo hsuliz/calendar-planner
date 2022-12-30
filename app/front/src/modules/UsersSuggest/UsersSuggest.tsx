@@ -2,13 +2,21 @@ import React, { useState } from 'react';
 
 import { MenuItem } from '@blueprintjs/core';
 import { Suggest2 } from '@blueprintjs/select';
-import { mockUsers } from './constants';
 import * as H from './helpers';
 import { User } from '../../api/apiModels';
+import { useAuth } from '../../contexts/useAuth';
+import { useQuery } from 'react-query';
+import { addUserToEvent, getSuggestions } from '../../api/eventsRequests';
 
-const UsersSuggest = () => {
+interface UserSuggestProps {
+	eventId: string;
+}
+
+const UsersSuggest = ({ eventId }: UserSuggestProps) => {
 	const [suggestions, setSuggestions] = useState<User[]>([]);
 	const [currentQuery, setCurrentQuery] = useState('');
+	const { token } = useAuth();
+	const { data } = useQuery(['suggestions', token], () => getSuggestions(eventId, token));
 
 	const onQueryChange = (query: string, event?: React.ChangeEvent | undefined) => {
 		if (!event) return;
@@ -16,18 +24,15 @@ const UsersSuggest = () => {
 		setCurrentQuery(query);
 
 		if (query.length > 1) {
-			// TODO: request do API po wszystkich/5 najbardziej pasujących userów
-			// szybciej będzie po wszystkich userów, więc może tak zróbmy, podpowiadanie i tak będzie ograne automatycznie
-			// wtedy wystarczy setSuggestions(usersFromApi)
-
-			setSuggestions(mockUsers);
+			setSuggestions(data || []);
 		} else {
 			setSuggestions([]);
 		}
 	};
 
-	const onUserSelect = (user: User) => {
-		console.log(user);
+	const onUserSelect = async (user: User) => {
+		const result = await addUserToEvent(eventId, user.email, token);
+		console.log(result);
 	};
 
 	return (

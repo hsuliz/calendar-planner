@@ -18,7 +18,7 @@ export function getUserItemProps(
 		onClick: handleClick,
 		onFocus: handleFocus,
 		roleStructure: 'listoption',
-		text: `${user.firstName} ${user.lastName}`,
+		text: `${user.firstName || ''} ${user.lastName || ''}`,
 	};
 }
 

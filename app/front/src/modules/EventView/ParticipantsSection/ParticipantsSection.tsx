@@ -8,9 +8,10 @@ import { Tooltip2 } from '@blueprintjs/popover2';
 
 interface ParticipantsSectionProps {
    isOwner: boolean;
+   eventId: string;
 }
 
-const ParticipantsSection = ({ isOwner }: ParticipantsSectionProps) => {
+const ParticipantsSection = ({ isOwner, eventId }: ParticipantsSectionProps) => {
    const [isDialogOpen, setIsDialogOpen] = useState(false);
    const [selectedParticipantEmail, setParticipantEmail] = useState('');
    const [isCopyToastOpen, setIsCopyToastOpen] = useState(false);
@@ -59,7 +60,7 @@ const ParticipantsSection = ({ isOwner }: ParticipantsSectionProps) => {
 
          <h3>Zaproś użytkowników</h3>
          <P.InvitationSectionWrapper>
-            <UsersSuggest />
+            <UsersSuggest eventId={eventId} />
             <span>lub</span>
             <Tooltip2
                className={Classes.TOOLTIP_INDICATOR}

@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import moment from 'moment';
 import { EventSourceInput } from '@fullcalendar/react';
-import { Event } from './apiModels';
+import { Event, User } from './apiModels';
 import { AddEventFormValues } from '../modules/AddEventForm/constants';
 
 export interface AddEventFormData {
@@ -94,12 +94,66 @@ export const getEvents = async (token: string): Promise<EventSourceInput> => {
 	return mapEventsToFullCalendarFormat(data.events || []);
 }
 
-export const getEvent = async (eventId: string, token: string): Promise<Event> => {
-	const { data } = await axios.get<Event>(`/event/${eventId}`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+export const getEvent = async (eventId: string, token: string): Promise<Event | undefined> => {
+	try {
+		const { data } = await axios.get<Event>(`/event/${eventId}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+	
+		return data;
+	} catch {
+		return undefined;
+	}
+}
 
-	return data;
+export const getSuggestions = async (eventId: string, token: string): Promise<User[] | undefined> => {
+	try {
+		const { data } = await axios.get<User[]>(`/event/${eventId}/suggest`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+	
+		return data;
+	} catch {
+		return undefined;
+	}
+}
+
+interface AddUserReturnValue {
+	success: boolean;
+	failureReason?: string;
+}
+
+export const addUserToEvent = async (
+	eventId: string,
+	userEmail: string,
+	token: string,
+): Promise<AddUserReturnValue> => {
+	try {
+		await axios.post(`/event/${eventId}/addUser`, {
+			email: userEmail,
+		}, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+	
+		return {
+			success: true,
+		};
+	} catch (e: unknown) {
+		if (e instanceof AxiosError) {
+			return {
+				success: false,
+				failureReason: e.response?.data.errorMessage,
+			};
+		}
+		return {
+			success: false,
+			failureReason: 'Wystąpił błąd, spróbuj ponownie później',
+		}
+	}
 }
