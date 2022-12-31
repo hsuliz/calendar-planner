@@ -40,6 +40,7 @@ public class User {
     @JsonIgnore
     private Set<Event> eventSet = new HashSet<>();
 
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;

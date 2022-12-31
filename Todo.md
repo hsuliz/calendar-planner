@@ -4,7 +4,7 @@ Endpoints:
 
 ---
 
-## protected GET /events/:eventId
+## ~~protected GET /events/:eventId~~
 
 ### zwraca wszystkie detale dotyczące danego wydarzenia, w szczególności (to dotyczy tylko publicznych wydarzeń):
 
@@ -21,7 +21,7 @@ potrzebny do wyświetlania podstrony ze szczegółami danego wydarzenia
 
 ---
 
-## protected GET /events/suggestUsers?eventId=1
+## ~~protected GET /events/suggestUsers?eventId=1~~
 
 ### zwraca listę wszystkich użytkowników w systemie poza:
 
@@ -35,7 +35,7 @@ potrzebny do dynamicznego podpowiadania kogo jeszcze można zaprosić na wydarze
 
 ---
 
-## protected POST /events/addUser?eventId=1 { email: String }
+## ~~protected POST /events/addUser?eventId=1 { email: String }~~
 
 ### dodaje użytkownika o podanym emailu do wydarzenia o id `eventId`
 

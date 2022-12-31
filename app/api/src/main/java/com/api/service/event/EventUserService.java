@@ -17,6 +17,7 @@ import java.util.Set;
 public class EventUserService {
 
     public final UserRepository userRepository;
+
     public final EventRepository eventRepository;
 
     public final EventService eventService;
@@ -33,17 +34,24 @@ public class EventUserService {
         eventRepository.save(event);
     }
 
+    // TODO NEED TO TEST BUT PROBABLY WORKING
     public Set<User> getSuggestUsers(Long eventId) {
-        eventService.getEvent(eventId);
+        var currentEvent = eventService.getEvent(eventId);
         var users = userRepository.findAll();
-
+        users.remove(currentEvent.getOwner());
         Set<User> endSet = new HashSet<>();
 
-        users.forEach(u -> u.getEvent().forEach(e -> {
-            if (e.getId().equals(eventId)) {
-                endSet.add(u);
+        users.forEach(user -> {
+            if (user.getEventSet().isEmpty()) {
+                endSet.add(user);
+            } else {
+                user.getEventSet().forEach(event -> {
+                    if (!event.getId().equals(eventId)) {
+                        endSet.add(user);
+                    }
+                });
             }
-        }));
+        });
 
         return endSet;
     }
