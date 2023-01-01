@@ -52,7 +52,6 @@ public class EventUserService {
                 });
             }
         });
-
         return endSet;
     }
 
