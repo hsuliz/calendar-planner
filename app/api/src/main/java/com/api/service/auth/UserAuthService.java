@@ -1,6 +1,7 @@
 package com.api.service.auth;
 
 import com.api.entity.User;
+import com.api.exception.UserExistsException;
 import com.api.model.LoginRequest;
 import com.api.repository.UserRepository;
 import com.api.service.TokenService;
@@ -26,12 +27,14 @@ public class UserAuthService {
     private final AuthenticationManager authenticationManager;
 
 
+    private static void accept(User u) {
+        throw new UserExistsException();
+    }
+
     public String registerUser(User user) {
         userRepository
                 .findByEmail(user.getEmail())
-                .ifPresent(u -> {
-                    throw new IllegalStateException("User with email already exist!!");
-                });
+                .ifPresent(UserAuthService::accept);
 
         var nonEncodedPassword = user.getPassword();
         user.setPassword(passwordEncoder.encode(nonEncodedPassword));

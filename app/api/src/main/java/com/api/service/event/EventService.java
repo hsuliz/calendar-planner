@@ -3,6 +3,7 @@ package com.api.service.event;
 import com.api.entity.Event;
 import com.api.entity.User;
 import com.api.exception.EventNotFoundException;
+import com.api.exception.SameEventException;
 import com.api.repository.EventRepository;
 import com.api.repository.UserRepository;
 import com.api.service.auth.UserAuthService;
@@ -17,6 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class EventService {
 
+
     public UserAuthService userAuthService;
 
     public UserRepository userRepository;
@@ -30,7 +32,7 @@ public class EventService {
             event.setOwner(currentUser);
             eventRepository.save(event);
         } else {
-            throw new IllegalStateException();
+            throw new SameEventException();
         }
     }
 
