@@ -1,9 +1,9 @@
 package com.api.controller.event;
 
 import com.api.entity.Event;
-import com.api.model.ReturnMessage;
 import com.api.service.auth.UserAuthService;
 import com.api.service.event.EventService;
+import com.api.util.ReturnMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,7 @@ import java.util.Set;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventController {
 
+
     public EventService eventService;
 
     public UserAuthService userAuthService;
@@ -28,7 +29,7 @@ public class EventController {
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody Event event, Principal principal) {
         eventService.saveEvent(event, userAuthService.auth(principal));
-        return ResponseEntity.ok(Map.of("message", "Event added!!"));
+        return ResponseEntity.ok(Map.of("message", "Event added."));
     }
 
     @GetMapping
@@ -44,7 +45,9 @@ public class EventController {
         var isContains = event.getUserSet().contains(user);
 
         if (!isContains && !isOwner) {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).body(
+                    Map.of("errorMessage", "Only owner can view this.")
+            );
         }
 
         return ResponseEntity.ok(Map.of(
