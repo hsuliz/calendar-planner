@@ -54,4 +54,8 @@ public class EventService {
         return eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
     }
 
+    public void deleteEvent(Long eventId) {
+        eventRepository.deleteById(eventId);
+    }
+
 }

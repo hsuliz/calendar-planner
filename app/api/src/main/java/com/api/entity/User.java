@@ -32,11 +32,12 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Event> event = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "userSet")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userSet")
     @JsonIgnore
     private Set<Event> eventSet = new HashSet<>();
 

@@ -1,6 +1,7 @@
 package com.api.controller.event;
 
 import com.api.entity.Event;
+import com.api.model.ReturnMessage;
 import com.api.service.auth.UserAuthService;
 import com.api.service.event.EventService;
 import lombok.AllArgsConstructor;
@@ -53,6 +54,21 @@ public class EventController {
                 "owner", event.getOwner(),
                 "list", event.getUserSet()
         ));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ReturnMessage> deleteEvent(Principal principal, @PathVariable Long id) {
+        var event = eventService.getEvent(id);
+        var user = userAuthService.auth(principal);
+        var isOwner = event.getOwner().getEmail().equals(principal.getName());
+        var isContains = event.getUserSet().contains(user);
+
+        eventService.deleteEvent(id);
+
+        if (!isContains && !isOwner) {
+            return ResponseEntity.status(404).build();
+        }
+        return ResponseEntity.ok(new ReturnMessage("Event deleted."));
     }
 
 }

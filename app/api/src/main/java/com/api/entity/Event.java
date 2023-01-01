@@ -40,7 +40,7 @@ public class Event {
     @JsonIgnore
     private User owner;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "course_like",
             joinColumns = @JoinColumn(name = "event_id"),
