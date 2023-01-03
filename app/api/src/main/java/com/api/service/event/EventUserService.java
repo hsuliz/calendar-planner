@@ -8,6 +8,7 @@ import com.api.exception.UserExistsException;
 import com.api.exception.UserNotFoundException;
 import com.api.repository.EventRepository;
 import com.api.repository.UserRepository;
+import com.api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,8 @@ public class EventUserService {
     public final EventRepository eventRepository;
 
     public final EventService eventService;
+
+    public final UserService userService;
 
     public void addUserToEvent(String userEmail, Long eventId) {
         var event = eventService.getEvent(eventId);
@@ -68,7 +71,8 @@ public class EventUserService {
         return endSet;
     }
 
-    public void deleteUserFromEvent(User user, Event event) {
+    public void deleteUserFromEvent(String email, Event event) {
+        var user = userService.getUser(email);
         user.getEventSet().remove(event);
         userRepository.save(user);
     }

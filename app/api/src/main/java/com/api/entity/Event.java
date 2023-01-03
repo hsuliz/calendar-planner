@@ -46,7 +46,7 @@ public class Event {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "course_like",
+            name = "user_event",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> userSet = new HashSet<>();

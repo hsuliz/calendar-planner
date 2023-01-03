@@ -39,11 +39,11 @@ public class EventService {
     }
 
     private String generateCode(String ownerEmail) {
-        return
-                ownerEmail.substring(0, 3) +
-                        (int) (Math.random() * 10) +
-                        (int) (Math.random() * 10) +
-                        (int) (Math.random() * 10);
+        StringBuilder code = new StringBuilder(Character.toString(ownerEmail.charAt(2)));
+        for (int i = 0; i < 5; i++) {
+            code.append((int) (Math.random() * 10));
+        }
+        return code.toString();
     }
 
     public boolean isOwner(Principal principal, Long eventId) {
