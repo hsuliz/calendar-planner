@@ -3,6 +3,7 @@ package com.api.controller.event;
 import com.api.service.auth.UserAuthService;
 import com.api.service.event.EventService;
 import com.api.service.event.EventUserService;
+import com.api.util.ReturnMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

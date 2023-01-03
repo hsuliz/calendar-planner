@@ -3,6 +3,7 @@ package com.api.controller.event;
 import com.api.entity.Event;
 import com.api.service.auth.UserAuthService;
 import com.api.service.event.EventService;
+import com.api.service.event.EventUserService;
 import com.api.util.ReturnMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,8 @@ public class EventController {
 
 
     public EventService eventService;
+
+    public EventUserService eventUserService;
 
     public UserAuthService userAuthService;
 
@@ -53,7 +56,7 @@ public class EventController {
         return ResponseEntity.ok(Map.of(
                 "public", event.getIsPublic(),
                 "isOwner", isOwner,
-                "inviteCode", event.hashCode(),
+                "inviteCode", event.getInviteCode(),
                 "owner", event.getOwner(),
                 "list", event.getUserSet()
         ));
@@ -73,5 +76,17 @@ public class EventController {
         }
         return ResponseEntity.ok(new ReturnMessage("Event deleted."));
     }
+
+    @PostMapping("/enroll")
+    public ResponseEntity<ReturnMessage> enroll(@RequestBody InviteCode inviteCode, Principal principal) {
+        var user = userAuthService.auth(principal);
+        System.out.println(inviteCode);
+        eventUserService.addUserToEventByCode(inviteCode.inviteCode, user);
+        return ResponseEntity.ok(new ReturnMessage("Enrolled."));
+    }
+
+    private record InviteCode(String inviteCode) {
+    }
+
 
 }

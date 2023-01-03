@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
+@Slf4j
 public class Event {
 
     @Id
@@ -36,6 +38,8 @@ public class Event {
 
     private Periodicity periodicity;
 
+    private String inviteCode;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
     private User owner;
@@ -46,9 +50,6 @@ public class Event {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> userSet = new HashSet<>();
-
-    @Transient
-    private String inviteCode;
 
 
     public Event(String name, String description, LocalDateTime dateFrom, LocalDateTime dateTo, Boolean isPublic, Periodicity periodicity, User owner) {

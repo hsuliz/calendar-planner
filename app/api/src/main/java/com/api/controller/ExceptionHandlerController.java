@@ -1,5 +1,6 @@
 package com.api.controller;
 
+import com.api.exception.AlreadyEnrolledException;
 import com.api.exception.EventNotFoundException;
 import com.api.exception.SameEventException;
 import com.api.exception.UserExistsException;
@@ -12,6 +13,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 @Slf4j
 public class ExceptionHandlerController {
+
+
+    @ExceptionHandler(AlreadyEnrolledException.class)
+    public ResponseEntity<ErrorMessage> AlreadyEnrolledExceptionHandler(Exception ex) {
+        log.info(ex.toString());
+        return
+                ResponseEntity
+                        .status(400)
+                        .body(
+                                new ErrorMessage("already enrolled")
+                        );
+    }
+
 
     @ExceptionHandler(SameEventException.class)
     public ResponseEntity<ErrorMessage> sameEventException(Exception ex) {

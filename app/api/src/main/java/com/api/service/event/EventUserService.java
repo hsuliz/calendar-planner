@@ -1,6 +1,8 @@
 package com.api.service.event;
 
 import com.api.entity.User;
+import com.api.exception.AlreadyEnrolledException;
+import com.api.exception.EventNotFoundException;
 import com.api.exception.UserExistsException;
 import com.api.exception.UserNotFoundException;
 import com.api.repository.EventRepository;
@@ -34,6 +36,16 @@ public class EventUserService {
         eventRepository.save(event);
     }
 
+    public void addUserToEventByCode(String inviteCode, User user) {
+        var event = eventRepository.findEventByInviteCode(inviteCode)
+                .orElseThrow(EventNotFoundException::new);
+        if (event.getUserSet().contains(user)) {
+            throw new AlreadyEnrolledException();
+        }
+        event.getUserSet().add(user);
+        eventRepository.save(event);
+    }
+
     // TODO NEED TO TEST BUT PROBABLY WORKING
     public Set<User> getSuggestUsers(Long eventId) {
         var currentEvent = eventService.getEvent(eventId);
@@ -54,5 +66,6 @@ public class EventUserService {
         });
         return endSet;
     }
+
 
 }

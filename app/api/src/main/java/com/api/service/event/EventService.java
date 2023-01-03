@@ -29,11 +29,21 @@ public class EventService {
     public void saveEvent(Event event, User currentUser) {
         var existingEvent = eventRepository.findEventByOwnerAndDateFromAndDateTo(currentUser, event.getDateFrom(), event.getDateTo()).orElse(null);
         if (existingEvent == null && isValid(event)) {
+            event.setInviteCode(generateCode(currentUser.getEmail()));
             event.setOwner(currentUser);
             eventRepository.save(event);
+            System.out.println("===" + event);
         } else {
             throw new SameEventException();
         }
+    }
+
+    private String generateCode(String ownerEmail) {
+        return
+                ownerEmail.substring(0, 3) +
+                        (int) (Math.random() * 10) +
+                        (int) (Math.random() * 10) +
+                        (int) (Math.random() * 10);
     }
 
     public boolean isOwner(Principal principal, Long eventId) {

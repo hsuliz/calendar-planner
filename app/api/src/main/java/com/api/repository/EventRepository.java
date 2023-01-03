@@ -16,4 +16,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Optional<Event> findEventByOwnerAndDateFromAndDateTo(User user, LocalDateTime dateFrom, LocalDateTime dateTo);
 
+    Optional<Event> findEventByInviteCode(String inviteCode);
+
 }
