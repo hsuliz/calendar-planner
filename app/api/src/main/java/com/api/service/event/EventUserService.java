@@ -1,5 +1,6 @@
 package com.api.service.event;
 
+import com.api.entity.Event;
 import com.api.entity.User;
 import com.api.exception.AlreadyEnrolledException;
 import com.api.exception.EventNotFoundException;
@@ -67,5 +68,9 @@ public class EventUserService {
         return endSet;
     }
 
+    public void deleteUserFromEvent(User user, Event event) {
+        user.getEventSet().remove(event);
+        userRepository.save(user);
+    }
 
 }

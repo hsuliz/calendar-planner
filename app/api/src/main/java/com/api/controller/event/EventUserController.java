@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/event/{eventId}")
@@ -25,7 +26,7 @@ public class EventUserController {
     public final EventService eventService;
 
 
-    @PostMapping("/addUser")
+    @PostMapping("/user")
     public ResponseEntity<String> createUser(@PathVariable Long eventId,
                                              @RequestBody Data data,
                                              Principal principal) {
@@ -38,7 +39,8 @@ public class EventUserController {
         return ResponseEntity.ok("Added!!");
     }
 
-    private ResponseEntity<String> getStringResponseEntity(Long eventId, Principal principal) {
+    private ResponseEntity<String> getStringResponseEntity(Long eventId,
+                                                           Principal principal) {
         if (!eventService.isOwner(principal, eventId)) {
             return ResponseEntity.status(401).build();
         }
@@ -53,6 +55,20 @@ public class EventUserController {
         if (build != null) return build;
 
         return ResponseEntity.ok(eventUserService.getSuggestUsers(eventId));
+    }
+
+    @DeleteMapping("/user")
+    public ResponseEntity<ReturnMessage> deleteUserFromEvent(@RequestBody Data data,
+                                                             Principal principal,
+                                                             @PathVariable Long eventId) {
+        var event = eventService.getEvent(eventId);
+        var user = userAuthService.auth(principal);
+        eventUserService.deleteUserFromEvent(user, event);
+
+        return
+                ResponseEntity.ok(
+                        new ReturnMessage("Deleted.")
+                );
     }
 
     private record Data(String email) {
