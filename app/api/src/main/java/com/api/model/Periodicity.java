@@ -11,6 +11,6 @@ public enum Periodicity {
     WEEKLY,
     @JsonProperty("monthly")
     MONTHLY,
-    @JsonProperty("monthly")
+    @JsonProperty("yearly")
     YEARLY
 }
