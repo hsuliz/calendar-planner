@@ -84,14 +84,18 @@ export type EventsApiReturnValue = {
 	events: Event[];
 }
 
-export const getEvents = async (token: string): Promise<EventSourceInput> => {
-	const { data } = await axios.get<EventsApiReturnValue>('/event', {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-
-	return mapEventsToFullCalendarFormat(data.events || []);
+export const getEvents = async (token: string): Promise<EventSourceInput | null> => {
+	try {
+		const { data } = await axios.get<EventsApiReturnValue>('/event', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		
+		return mapEventsToFullCalendarFormat(data.events || []);
+	} catch {
+		return null;
+	}
 }
 
 export const getEvent = async (eventId: string, token: string): Promise<Event | undefined> => {
