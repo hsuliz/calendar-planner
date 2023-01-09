@@ -19,6 +19,7 @@ export const AddEventModal = ({ isOpen, clickedDate, setIsOpen }: AddEventModalP
 			isOpen={isOpen}
 			onClose={handleModalClose}
 			title='Dodaj wydarzenie'
+			canEscapeKeyClose={false}
 		>
 			<AddEventForm clickedDate={clickedDate} onModalClose={handleModalClose} />
 		</Dialog>

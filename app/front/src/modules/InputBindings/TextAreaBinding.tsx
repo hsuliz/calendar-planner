@@ -19,7 +19,7 @@ export const TextAreaBinding = ({
 
 	return (
 		<Tooltip2 content={error || 'tu mogę wpisać cokolwiek serio'} isOpen={!!error} fill>
-			<Label>
+			<Label tabIndex={-1}>
 				{label}
 				<TextArea
 					fill

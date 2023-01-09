@@ -1,5 +1,6 @@
 package com.api;
 
+import com.api.entity.User;
 import com.api.repository.EventRepository;
 import com.api.repository.UserRepository;
 import org.springframework.boot.ApplicationRunner;
@@ -24,10 +25,13 @@ public class ApiApplication {
             PasswordEncoder passwordEncoder
     ) {
         return args -> {
-            /*var user = new User(
-                    "test@test.com", passwordEncoder.encode("testtest")
+            var user = new User(
+                "Michał", 
+                "Rojek",
+                "test@test.com", 
+                passwordEncoder.encode("testtest")
             );
-            userRepository.save(user);*/
+            userRepository.save(user);
         };
     }
 

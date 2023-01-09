@@ -45,7 +45,7 @@ export const PasswordInputBinding = ({
 			isOpen={!!error}
 			fill
 		>
-			<Label>
+			<Label tabIndex={-1}>
 				{label}
 				<InputGroup
 					placeholder={placeholder}

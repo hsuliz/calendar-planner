@@ -80,12 +80,11 @@ export const DateInputBinding = ({
 			isOpen={!!error}
 			fill
 		>
-			<Label>
+			<Label tabIndex={-1}>
 				{label}
 				<DateInput
 					minDate={minDate}
 					maxDate={maxDate}
-					// TODO: default value to powinien być kliknięty dzień na kalendarzu
 					defaultValue={value}
 					value={value}
 					locale={'pl'}
