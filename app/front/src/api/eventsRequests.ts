@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import moment from 'moment';
 import { EventSourceInput } from '@fullcalendar/react';
-import { Event, User } from './apiModels';
+import { Event, EventDetails, User } from './apiModels';
 import { AddEventFormValues } from '../modules/AddEventForm/constants';
 
 export interface AddEventFormData {
@@ -98,9 +98,9 @@ export const getEvents = async (token: string): Promise<EventSourceInput | null>
 	}
 }
 
-export const getEvent = async (eventId: string, token: string): Promise<Event | undefined> => {
+export const getEvent = async (eventId: string, token: string): Promise<EventDetails | undefined> => {
 	try {
-		const { data } = await axios.get<Event>(`/event/${eventId}`, {
+		const { data } = await axios.get<EventDetails>(`/event/${eventId}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -137,11 +137,43 @@ export const addUserToEvent = async (
 	token: string,
 ): Promise<AddUserReturnValue> => {
 	try {
-		await axios.post(`/event/${eventId}/addUser`, {
+		await axios.post(`/event/${eventId}/user`, {
 			email: userEmail,
 		}, {
 			headers: {
 				Authorization: `Bearer ${token}`,
+			},
+		});
+	
+		return {
+			success: true,
+		};
+	} catch (e: unknown) {
+		if (e instanceof AxiosError) {
+			return {
+				success: false,
+				failureReason: e.response?.data.errorMessage,
+			};
+		}
+		return {
+			success: false,
+			failureReason: 'Wystąpił błąd, spróbuj ponownie później',
+		}
+	}
+}
+
+export const removeUserFromEvent = async (
+	eventId: string,
+	userEmail: string,
+	token: string,
+): Promise<AddUserReturnValue> => {
+	try {
+		await axios.delete(`/event/${eventId}/user`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			data: {
+				email: userEmail,
 			},
 		});
 	

@@ -18,3 +18,10 @@ export interface Event {
 	periodicity: PeriodicityType;
 	until?: string;
 }
+
+export interface EventDetails extends Event {
+	isOwner: boolean;
+	owner: User;
+	inviteCode: string;
+	list: User[];
+}

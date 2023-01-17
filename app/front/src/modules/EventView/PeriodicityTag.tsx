@@ -27,7 +27,6 @@ const PeriodicityTag = ({ periodicity }: PeriodicityTagProps) => {
 			>
 				{periodicityTranslations[periodicity]}
 			</Tag>
-			{!isSingleEvent && <div>Najbliższe powtórzenie wydarzenia:</div>}
 		</div>
 	);
 };

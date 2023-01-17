@@ -54,7 +54,15 @@ public class EventController {
         }
 
         return ResponseEntity.ok(Map.of(
-                "public", event.getIsPublic(),
+                "name", event.getName(),
+                "description", event.getDescription(),
+                "dateFrom", event.getDateFrom(),
+                "dateTo", event.getDateTo(),
+                "isPublic", event.getIsPublic(),
+                "periodicity", event.getPeriodicity(),
+                // TODO: add until field
+                // "until", event.getUntil(),
+
                 "isOwner", isOwner,
                 "inviteCode", event.getInviteCode(),
                 "owner", event.getOwner(),

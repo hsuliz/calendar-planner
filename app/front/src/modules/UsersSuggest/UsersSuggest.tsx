@@ -10,9 +10,10 @@ import { addUserToEvent, getSuggestions } from '../../api/eventsRequests';
 
 interface UserSuggestProps {
 	eventId: string;
+	refetchEventDetails: () => void;
 }
 
-const UsersSuggest = ({ eventId }: UserSuggestProps) => {
+const UsersSuggest = ({ eventId, refetchEventDetails }: UserSuggestProps) => {
 	const [suggestions, setSuggestions] = useState<User[]>([]);
 	const [currentQuery, setCurrentQuery] = useState('');
 	const { token } = useAuth();
@@ -33,6 +34,9 @@ const UsersSuggest = ({ eventId }: UserSuggestProps) => {
 	const onUserSelect = async (user: User) => {
 		const result = await addUserToEvent(eventId, user.email, token);
 		console.log(result);
+		if (result.success) {
+			refetchEventDetails();
+		}
 	};
 
 	return (
