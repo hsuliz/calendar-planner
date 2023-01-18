@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
-import { MenuItem } from '@blueprintjs/core';
+import { Intent, MenuItem } from '@blueprintjs/core';
 import { Suggest2 } from '@blueprintjs/select';
 import * as H from './helpers';
 import { User } from '../../api/apiModels';
 import { useAuth } from '../../contexts/useAuth';
 import { useQuery } from 'react-query';
 import { addUserToEvent, getSuggestions } from '../../api/eventsRequests';
+import toast from '../../utils/toast';
 
 interface UserSuggestProps {
 	eventId: string;
@@ -33,8 +34,9 @@ const UsersSuggest = ({ eventId, refetchEventDetails }: UserSuggestProps) => {
 
 	const onUserSelect = async (user: User) => {
 		const result = await addUserToEvent(eventId, user.email, token);
-		console.log(result);
+
 		if (result.success) {
+			toast.show({ message: `Dodano użytkownika ${user.email}`, intent: Intent.SUCCESS, icon: 'new-person'});
 			refetchEventDetails();
 		}
 	};

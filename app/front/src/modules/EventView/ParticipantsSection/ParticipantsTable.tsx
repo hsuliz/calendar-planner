@@ -3,6 +3,7 @@ import { Button, Callout, Classes, Dialog, Intent } from '@blueprintjs/core';
 import { User } from '../../../api/apiModels';
 import { removeUserFromEvent } from '../../../api/eventsRequests';
 import { useAuth } from '../../../contexts/useAuth';
+import toast from '../../../utils/toast';
 
 interface ParticipantsTableProps {
    eventId: string;
@@ -26,7 +27,6 @@ const ParticipantsTable = ({
    };
 
    const onOpenRemovalDialog = (participantMail: string) => {
-      console.log('remove dude with mail = ', participantMail);
       setParticipantEmail(participantMail);
       setIsDialogOpen(true);
    };
@@ -36,8 +36,19 @@ const ParticipantsTable = ({
          await removeUserFromEvent(eventId, selectedParticipantEmail, token);
          setIsDialogOpen(false);
          refetchEventDetails();
+			toast.show({
+				message: `Usunięto użytkownika ${selectedParticipantEmail} z wydarzenia`,
+				intent: Intent.PRIMARY,
+				icon: 'blocked-person',
+				timeout: 3000,
+			});
       } catch {
-         // TODO komunikat błędu
+			toast.show({
+				message: `Wystąpił błąd. Spróbuj ponownie później.`,
+				intent: Intent.DANGER,
+				icon: 'issue',
+				timeout: 3000,
+			});
       }
    };
 

@@ -10,6 +10,7 @@ import { User } from '../../../api/apiModels';
 interface ParticipantsSectionProps {
    isOwner: boolean;
    eventId: string;
+   inviteCode: string;
    participantsList: User[];
    refetchEventDetails: () => void;
 }
@@ -17,12 +18,14 @@ interface ParticipantsSectionProps {
 const ParticipantsSection = ({
    isOwner,
    eventId,
+   inviteCode,
    participantsList,
    refetchEventDetails,
 }: ParticipantsSectionProps) => {
    const [isCopyToastOpen, setIsCopyToastOpen] = useState(false);
 
    const onCopyCodeToClipboard = () => {
+      navigator.clipboard.writeText(inviteCode);
       setIsCopyToastOpen(true);
 
       setTimeout(() => {

@@ -98,7 +98,7 @@ export const getEvents = async (token: string): Promise<EventSourceInput | null>
 	}
 }
 
-export const getEvent = async (eventId: string, token: string): Promise<EventDetails | undefined> => {
+export const getEvent = async (eventId: string, token: string): Promise<EventDetails | null> => {
 	try {
 		const { data } = await axios.get<EventDetails>(`/event/${eventId}`, {
 			headers: {
@@ -108,7 +108,21 @@ export const getEvent = async (eventId: string, token: string): Promise<EventDet
 	
 		return data;
 	} catch {
-		return undefined;
+		return null;
+	}
+}
+
+export const deleteEvent = async (eventId: string, token: string): Promise<boolean> => {
+	try {
+		const { status } = await axios.delete(`/event/${eventId}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+	
+		return status === 200;
+	} catch {
+		return false;
 	}
 }
 
