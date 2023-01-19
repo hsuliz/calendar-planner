@@ -40,7 +40,7 @@ public class Event {
 
     private String inviteCode;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JsonIgnore
     private User owner;
 

@@ -9,7 +9,9 @@ import com.api.exception.UserNotFoundException;
 import com.api.repository.EventRepository;
 import com.api.repository.UserRepository;
 import com.api.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -80,10 +82,15 @@ public class EventUserService {
         return endSet;
     }
 
+    @Transactional
     public void deleteUserFromEvent(String email, Event event) {
         var user = userService.getUser(email);
         user.getEventSet().remove(event);
-        userRepository.save(user);
+        event.getUserSet().remove(user);
+        // wtf
+        userRepository.delete(user);
+        userRepository.flush();
+        userRepository.saveAndFlush(user);
     }
 
 }
