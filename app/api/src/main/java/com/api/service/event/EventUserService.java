@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -28,35 +29,14 @@ public class EventUserService {
 
     public final UserService userService;
 
-    public void addUserToEvent(String userEmail, Long eventId) {
-        var event = eventService.getEvent(eventId);
-        var user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
 
+    private static void isUserContainsInEvent(Event event, User user) {
         if (event.getUserSet().contains(user)) {
             throw new UserExistsException();
         }
-
-        event.getUserSet().add(user);
-        eventRepository.save(event);
     }
 
-    public void addUserToEventByCode(String inviteCode, User user) {
-        var event = eventRepository.findEventByInviteCode(inviteCode)
-                .orElseThrow(EventNotFoundException::new);
-        if (event.getUserSet().contains(user)) {
-            throw new AlreadyEnrolledException();
-        }
-        event.getUserSet().add(user);
-        eventRepository.save(event);
-    }
-
-    // TODO NEED TO TEST BUT PROBABLY WORKING
-    public Set<User> getSuggestUsers(Long eventId) {
-        var currentEvent = eventService.getEvent(eventId);
-        var users = userRepository.findAll();
-        users.remove(currentEvent.getOwner());
-        Set<User> endSet = new HashSet<>();
-
+    private static void findUsersForSuggest(Long eventId, List<User> users, Set<User> endSet) {
         users.forEach(user -> {
             if (user.getEventSet().isEmpty()) {
                 endSet.add(user);
@@ -68,6 +48,35 @@ public class EventUserService {
                 });
             }
         });
+    }
+
+    public void addUserToEvent(String userEmail, Long eventId) {
+        var event = eventService.getEvent(eventId);
+        var user = userRepository
+                .findByEmail(userEmail)
+                .orElseThrow(UserNotFoundException::new);
+        isUserContainsInEvent(event, user);
+        event.getUserSet().add(user);
+        eventRepository.save(event);
+    }
+
+    public void addUserToEventByCode(String inviteCode, User user) {
+        var event = eventRepository
+                .findEventByInviteCode(inviteCode)
+                .orElseThrow(EventNotFoundException::new);
+        if (event.getUserSet().contains(user)) {
+            throw new AlreadyEnrolledException();
+        }
+        event.getUserSet().add(user);
+        eventRepository.save(event);
+    }
+
+    public Set<User> getSuggestUsers(Long eventId) {
+        var currentEvent = eventService.getEvent(eventId);
+        var users = userRepository.findAll();
+        users.remove(currentEvent.getOwner());
+        Set<User> endSet = new HashSet<>();
+        findUsersForSuggest(eventId, users, endSet);
         return endSet;
     }
 

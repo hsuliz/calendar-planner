@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,7 +28,8 @@ public class EventService {
 
 
     public void saveEvent(Event event, User currentUser) {
-        var existingEvent = eventRepository.findEventByOwnerAndDateFromAndDateTo(currentUser, event.getDateFrom(), event.getDateTo()).orElse(null);
+        var existingEvent = eventRepository
+                .findEventByOwnerAndDateFromAndDateTo(currentUser, event.getDateFrom(), event.getDateTo()).orElse(null);
         if (existingEvent == null && isValid(event)) {
             event.setInviteCode(generateCode(currentUser.getEmail()));
             event.setOwner(currentUser);
@@ -57,7 +59,9 @@ public class EventService {
     }
 
     public Set<Event> getEvents(User user) {
-        return eventRepository.findEventsByOwner(user).orElseThrow();
+        var eventSet = eventRepository.findEventsByOwner(user).orElseThrow();
+        eventSet.addAll(user.getEventSet());
+        return eventSet;
     }
 
     public Event getEvent(Long eventId) {
