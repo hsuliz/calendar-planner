@@ -5,20 +5,22 @@ import { Formik, Form, Field } from 'formik';
 import * as C from './constants';
 import { TextInputBinding } from '../InputBindings/TextInputBinding';
 import { PasswordInputBinding } from '../InputBindings/PasswordInputBinding';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { loginRequest } from '../../api/requests';
 import { useAuth } from '../../contexts/useAuth';
+import toast from '../../utils/toast';
 
 function LoginForm() {
-	const { isLoggedIn, setIsLoggedIn, setToken } = useAuth();
+	const { isLoggedIn, setIsLoggedIn, setToken, setUserEmail } = useAuth();
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [wasFormTouched, setWasFormTouched] = useState(false);
 	const [formError, setFormError] = useState(''); // here we keep error message from API
 	const [formSuccess, setFormSuccess] = useState(false); // here we only mark if form submitting was successful
+	const navigate = useNavigate();
 
 	if (isLoggedIn && !wasFormTouched) {
-		// only if user enters /login page manually
+		// only if owner enters /login page manually
 		return <Navigate to='/kalendarz' replace={true} />;
 	}
 
@@ -47,8 +49,10 @@ function LoginForm() {
 		if (success) {
 			setToken(token);
 			setFormSuccess(true);
+			setUserEmail(values.email);
 			setIsLoggedIn(true);
-			return;
+			toast.show({ message: 'Zalogowano!', intent: Intent.SUCCESS, icon: 'endorsed' });
+			return navigate('/kalendarz');
 		}
 
 		// Failure scenario

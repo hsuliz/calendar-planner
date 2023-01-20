@@ -23,6 +23,9 @@ const DateInput = styled(DateInputBase)<{ hasError?: boolean }>`
 		`}
 `;
 
+const minDate = new Date(1990, 0, 1);
+const maxDate = new Date(2050, 11, 31);
+
 export const DateInputBinding = ({
 	field,
 	form,
@@ -34,6 +37,16 @@ export const DateInputBinding = ({
 	const { setFieldValue } = form;
 
 	const onChange = (selectedDate: Date | null) => {
+		if (!selectedDate) return;
+
+		if (selectedDate > maxDate) {
+			return setFieldValue(name, maxDate);
+		}
+
+		if (selectedDate < minDate) {
+			return setFieldValue(name, minDate);
+		}
+
 		setFieldValue(name, selectedDate);
 	};
 
@@ -67,12 +80,11 @@ export const DateInputBinding = ({
 			isOpen={!!error}
 			fill
 		>
-			<Label>
+			<Label tabIndex={-1}>
 				{label}
 				<DateInput
-					minDate={new Date(1990, 1, 1)}
-					maxDate={new Date(2035, 12, 31)}
-					// TODO: default value to powinien być kliknięty dzień na kalendarzu
+					minDate={minDate}
+					maxDate={maxDate}
 					defaultValue={value}
 					value={value}
 					locale={'pl'}

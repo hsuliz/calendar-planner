@@ -6,10 +6,12 @@
 
 - Java 17
 - [node.js](https://nodejs.org/en/download/) (LTS, v14 lub więcej)
+- Bazy danych PostgreSQL.
 
 ### Jak zainicjować projekt
 
 - zaciągamy najnowsze zmiany z gita
+- uruchamiamy baze `docker-compose up -d`
 - przechodzimy do folderu `app/api/`
 - wykonujemy komendę `./mvnw spring-boot:run`
 - przechodzimy do folderu `app/front/`

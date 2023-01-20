@@ -24,7 +24,7 @@ export const TextInputBinding = ({
 			isOpen={!!error}
 			fill
 		>
-			<Label>
+			<Label tabIndex={-1}>
 				{label}
 				<InputGroup
 					placeholder={placeholder}

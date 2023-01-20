@@ -11,6 +11,7 @@ import { postFormData } from '../../api/eventsRequests';
 import { useAuth } from '../../contexts/useAuth';
 import * as C from './constants';
 import * as P from './parts';
+import toast from '../../utils/toast';
 
 export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps) => {
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
@@ -20,18 +21,34 @@ export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps)
 	const onFormSubmit = async (values: C.AddEventFormValues) => {
 		setIsSubmitting(true);
 		const { isSuccess, failureReason } = await postFormData(values, token);
-		console.log(isSuccess, failureReason);
 
 		if (isSuccess) {
-			// close modal, show toast
+			toast.show({
+				message: `Utworzono wydarzenie ${values.name}!`,
+				intent: Intent.SUCCESS,
+				icon: 'endorsed',
+				timeout: 3000,
+			});
+
 			onModalClose();
 		}
 
 		if (failureReason) {
-			// stay in modal, show toast with error or callout with error
+			toast.show({
+				message: failureReason,
+				intent: Intent.DANGER,
+				icon: 'issue',
+				timeout: 5000,
+			});
 		}
 
 		setIsSubmitting(false);
+	};
+
+	const onFormKeyDown: React.KeyboardEventHandler<HTMLFormElement> = (event) => {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+		}
 	};
 
 	const initialFormValues = useMemo(() => {
@@ -55,6 +72,7 @@ export const AddEventForm = ({ clickedDate, onModalClose }: C.AddEventFormProps)
 		>
 			{({ handleSubmit, errors, values }) => (
 				<Form
+					onKeyDown={onFormKeyDown}
 					onSubmit={(e: React.FormEvent) => {
 						e.preventDefault();
 						setValidateOnChange(true);

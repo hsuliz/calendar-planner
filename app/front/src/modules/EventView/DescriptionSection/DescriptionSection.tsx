@@ -50,6 +50,10 @@ const DescriptionSection = ({ description }: DescriptionSectionProps) => {
 		onAdjustTextAreaSize();
 	}, [textAreaRef]);
 
+	useEffect(() => {
+		setShouldDisplayTextArea(!!description);
+	}, [description])
+
 	return (
 		<div>
 			{!shouldDisplayTextArea && (
