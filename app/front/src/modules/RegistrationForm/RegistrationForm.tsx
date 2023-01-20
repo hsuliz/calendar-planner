@@ -11,7 +11,7 @@ import { useAuth } from '../../contexts/useAuth';
 import { CheckboxBinding } from '../InputBindings/CheckboxBinding';
 
 function RegistrationForm() {
-	const { isLoggedIn, setIsLoggedIn, setToken } = useAuth();
+	const { isLoggedIn, setIsLoggedIn, setToken, setUserEmail } = useAuth();
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [wasFormTouched, setWasFormTouched] = useState(false);
@@ -54,6 +54,7 @@ function RegistrationForm() {
 		// Success scenario
 		if (success) {
 			setFormSuccess(true);
+			setUserEmail(values.email);
 			setIsLoggedIn(true);
 			setToken(token);
 			return;

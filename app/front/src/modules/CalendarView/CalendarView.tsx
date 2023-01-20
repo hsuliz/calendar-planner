@@ -10,7 +10,6 @@ import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'; // 
 
 import './bootstrap-theme/bootstrap.min.css';
 import { AddEventModal } from '../AddEventModal/AddEventModal';
-import * as C from './constants';
 import { getEvents } from '../../api/eventsRequests';
 import { useAuth } from '../../contexts/useAuth';
 import { useQuery } from 'react-query';
@@ -57,7 +56,7 @@ const CalendarView = () => {
             <FullCalendar
                // PLUGINS AND EVENTS CONFIG
                plugins={[dayGridPlugin, interactionPlugin, listPlugin, rrulePlugin]}
-               events={events || C.mockedEvents}
+               events={events}
                // CLICK AND CHANGE HANDLERS
                dateClick={handleDateClick}
                eventClick={onEventClick}

@@ -35,27 +35,34 @@ const ParticipantsSection = ({
 
    return (
       <div>
-         <h3>Zaproś użytkowników</h3>
-         <P.InvitationSectionWrapper>
-            <UsersSuggest refetchEventDetails={refetchEventDetails}  eventId={eventId} />
-            <span>lub</span>
-            <Tooltip2
-               className={Classes.TOOLTIP_INDICATOR}
-               intent={Intent.PRIMARY}
-               position='top'
-               content='skopiowano!'
-               isOpen={isCopyToastOpen}
-            >
-               <Button
-                  minimal
-                  intent={Intent.PRIMARY}
-                  icon='clipboard'
-                  onClick={onCopyCodeToClipboard}
-               >
-                  Skopiuj link zapraszający
-               </Button>
-            </Tooltip2>
-         </P.InvitationSectionWrapper>
+         {isOwner && (
+            <>
+               <h3>Zaproś użytkowników</h3>
+               <P.InvitationSectionWrapper>
+                  <UsersSuggest
+                     refetchEventDetails={refetchEventDetails}
+                     eventId={eventId}
+                  />
+                  <span>lub</span>
+                  <Tooltip2
+                     className={Classes.TOOLTIP_INDICATOR}
+                     intent={Intent.PRIMARY}
+                     position='top'
+                     content='skopiowano!'
+                     isOpen={isCopyToastOpen}
+                  >
+                     <Button
+                        minimal
+                        intent={Intent.PRIMARY}
+                        icon='clipboard'
+                        onClick={onCopyCodeToClipboard}
+                     >
+                        Skopiuj link zapraszający
+                     </Button>
+                  </Tooltip2>
+               </P.InvitationSectionWrapper>
+            </>
+         )}
 
          <h3>Lista uczestników</h3>
 

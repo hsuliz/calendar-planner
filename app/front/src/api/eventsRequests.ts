@@ -84,7 +84,7 @@ export type EventsApiReturnValue = {
 	events: Event[];
 }
 
-export const getEvents = async (token: string): Promise<EventSourceInput | null> => {
+export const getEvents = async (token: string): Promise<EventSourceInput> => {
 	try {
 		const { data } = await axios.get<EventsApiReturnValue>('/event', {
 			headers: {
@@ -94,7 +94,7 @@ export const getEvents = async (token: string): Promise<EventSourceInput | null>
 		
 		return mapEventsToFullCalendarFormat(data.events || []);
 	} catch {
-		return null;
+		return [];
 	}
 }
 

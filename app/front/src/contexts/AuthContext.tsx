@@ -9,6 +9,8 @@ import {
 interface IAuthContext {
 	isLoggedIn: boolean;
 	setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+	userEmail?: string;
+	setUserEmail: React.Dispatch<React.SetStateAction<string>>;
 	token: string;
 	setToken: (jwt: string) => void;
 	onLogout: () => void;
@@ -19,6 +21,7 @@ const AuthContext = React.createContext<IAuthContext>({} as IAuthContext);
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [token, setToken] = useState(getTokenFromLS() || '');
+	const [userEmail, setUserEmail] = useState('');
 
 	const onSetToken = (jwt: string) => {
 		setToken(jwt);
@@ -59,6 +62,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const contextValue: IAuthContext = {
 		isLoggedIn,
 		setIsLoggedIn,
+		userEmail,
+		setUserEmail,
 		token,
 		setToken: onSetToken,
 		onLogout,

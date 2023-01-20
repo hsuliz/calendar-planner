@@ -1,34 +1,20 @@
-import React, { useState } from 'react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import {
-   Button,
-   Callout,
-   Classes,
-   Dialog,
-   Divider,
-   Intent,
-   Spinner,
-   Tag,
-} from '@blueprintjs/core';
+import React from 'react';
+import { Link, Navigate, useParams } from 'react-router-dom';
+import { Button, Classes, Divider, Intent, Spinner, Tag } from '@blueprintjs/core';
 import moment from 'moment';
 import { useQuery } from 'react-query';
 import PeriodicityTag from './PeriodicityTag';
 import ParticipantsSection from './ParticipantsSection/ParticipantsSection';
 import DescriptionSection from './DescriptionSection/DescriptionSection';
-import { deleteEvent, getEvent } from '../../api/eventsRequests';
+import { getEvent } from '../../api/eventsRequests';
 import { useAuth } from '../../contexts/useAuth';
 import * as P from './parts';
 import * as C from './constants';
-import toast from '../../utils/toast';
-
-// TODO: zweryfikować czy użytkownik może zobaczyć dany event (jeśli nie to robimy redirect na /kalendarz)
+import LeaveEventSection from './LeaveEventSection/LeaveEventSection';
 
 const EventView = (props: C.EventViewProps) => {
    const { id: eventId } = useParams();
-   const navigate = useNavigate();
-
-   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
-   const { token } = useAuth();
+   const { token, isLoggedIn } = useAuth();
    const { data: eventDetails, refetch } = useQuery(['event', eventId], () =>
       getEvent(eventId!, token),
    );
@@ -37,34 +23,11 @@ const EventView = (props: C.EventViewProps) => {
       refetch();
    };
 
-   const onRemoveEvent = () => {
-      setIsRemoveDialogOpen(true);
-      console.log('remove event with ID: ', eventId);
-   };
-
-   const onCloseDialog = () => {
-      setIsRemoveDialogOpen(false);
-   };
-
-   const onDeleteEvent = async () => {
-      const deleteStatus = await deleteEvent(eventId!, token);
-
-      if (deleteStatus) {
-         toast.show({
-            message: `Usunięto wydarzenie ${eventDetails?.name ?? ''}`,
-            intent: Intent.PRIMARY,
-            icon: 'trash',
-            timeout: 5000,
-         });
-         return navigate('..', { relative: 'path' });
-      }
-   };
-
    if (eventDetails === undefined) {
       return <Spinner />;
    }
 
-   if (eventDetails === null) {
+   if (eventDetails === null || !isLoggedIn) {
       return <Navigate to='..' relative='path' />;
    }
 
@@ -78,6 +41,7 @@ const EventView = (props: C.EventViewProps) => {
       isOwner,
       list,
       inviteCode,
+      owner,
    } = eventDetails;
 
    return (
@@ -92,6 +56,20 @@ const EventView = (props: C.EventViewProps) => {
          <DescriptionSection description={description} />
 
          <P.EventTimeFrameWrapper>
+            {!isOwner && (
+               <>
+                  <h2>
+                     Organizator:{' '}
+                     <b>
+                        {owner.firstName} {owner.lastName}
+                     </b>
+                     <a href={`mailto:${owner.email}`}>
+                        <Button icon='envelope' intent={Intent.PRIMARY} minimal />
+                     </a>
+                  </h2>
+               </>
+            )}
+
             <h4>
                Początek wydarzenia: {moment(dateFrom).format(C.dateFormat)}{' '}
                <Tag intent={Intent.PRIMARY} round>
@@ -121,30 +99,11 @@ const EventView = (props: C.EventViewProps) => {
             </>
          )}
 
-         {isOwner && (
-            <>
-               <Divider />
-
-               <Button icon='trash' onClick={onRemoveEvent} intent={Intent.DANGER} fill>
-                  Usuń wydarzenie
-               </Button>
-               <Dialog
-                  className={Classes.DARK}
-                  isOpen={isRemoveDialogOpen}
-                  onClose={onCloseDialog}
-                  isCloseButtonShown
-                  title='Uwaga!'
-               >
-                  <Callout intent={Intent.DANGER}>
-                     <p>Czy chcesz usunąć to wydarzenie? Tej akcji nie można cofnąć!</p>
-
-                     <Button fill intent={Intent.DANGER} onClick={onDeleteEvent}>
-                        Potwierdzam usunięcie
-                     </Button>
-                  </Callout>
-               </Dialog>
-            </>
-         )}
+         <LeaveEventSection
+            isOwner={isOwner}
+            eventId={eventId!}
+            eventName={eventDetails.name}
+         />
       </P.EventInfoWrapper>
    );
 };

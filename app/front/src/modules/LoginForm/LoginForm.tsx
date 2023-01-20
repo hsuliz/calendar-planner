@@ -11,7 +11,7 @@ import { useAuth } from '../../contexts/useAuth';
 import toast from '../../utils/toast';
 
 function LoginForm() {
-	const { isLoggedIn, setIsLoggedIn, setToken } = useAuth();
+	const { isLoggedIn, setIsLoggedIn, setToken, setUserEmail } = useAuth();
 	const [shouldValidateOnChange, setValidateOnChange] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [wasFormTouched, setWasFormTouched] = useState(false);
@@ -49,6 +49,7 @@ function LoginForm() {
 		if (success) {
 			setToken(token);
 			setFormSuccess(true);
+			setUserEmail(values.email);
 			setIsLoggedIn(true);
 			toast.show({ message: 'Zalogowano!', intent: Intent.SUCCESS, icon: 'endorsed' });
 			return navigate('/kalendarz');
