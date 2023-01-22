@@ -4,9 +4,9 @@
 
 ### Czego potrzebujemy
 
--  Java 17
+-  [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 -  [node.js](https://nodejs.org/en/download/) (LTS, v14 lub więcej)
--  Docker Desktop
+-  [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Jak zainicjować projekt
 
